@@ -1,3 +1,6 @@
+URL del proyecto en GitHub:
+	https://github.com/alcasa04/PVLI
+
 semana del 20 Nov (Actual)
     Primeras mecánicas completadas ( movimiento básico personaje principal )
     Búsqueda de información sobre cómo trabajar con Phaser, con el fin de
