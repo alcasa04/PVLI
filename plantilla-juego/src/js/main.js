@@ -10,6 +10,7 @@ var BootScene = {
 	this.game.load.image('logo', 'images/Phaser.png');
 	this.game.load.image('prota', 'images/prota.png');
 	this.game.load.image('enemigo', 'images/enemigo.png');
+	this.game.load.image('suelo', 'images/suelo.png');
   },
 
   create: function () {
