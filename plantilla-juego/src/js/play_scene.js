@@ -3,6 +3,7 @@
 
 var prota;
 var enemigo;
+var cabeza;
 var sueloNormal;
 var velCaida = 10;
 var teclas;
@@ -36,11 +37,16 @@ var PlayScene = {
 	
 	enemigo = this.game.add.sprite(this.game.width-200, 200, 'enemigo');
 	enemigo.width = enemigo.height = 50;
+	this.game.physics.arcade.enable(enemigo);
+	enemigo.body.colliderWorldBounds = true;
+	cabeza = enemigo.addChild(this.game.add.sprite(0, -enemigo.height*3, 'cabeza'));
+	cabeza.height = cabeza.height*0.3;
+    this.game.physics.arcade.enable(cabeza);
+	cabeza.body.colliderWorldBounds = true;
 	
 	sueloNormal = this.game.add.sprite(0, this.game.height-100, 'suelo');
 	sueloNormal.width = 250; sueloNormal.height = 100;
 	this.game.physics.arcade.enable(sueloNormal);
-	sueloNormal.body.checkCollision.up = true;
 	sueloNormal.body.inmovable = true;
 	auxSueloY = sueloNormal.position.y
 	auxSueloX = sueloNormal.position.x
@@ -53,6 +59,7 @@ var PlayScene = {
   update: function()
   {
 	  var choque = this.game.physics.arcade.collide(prota, sueloNormal);
+	  var damageCabeza = this.game.physics.arcade.overlap(prota, cabeza);
 	  
 	  if(choque){
 
@@ -104,7 +111,14 @@ var PlayScene = {
 	{
 			prota.body.velocity.x += velocidadProta;
 	}
+	
+	if(damageCabeza)
+	{
+		  cabeza.destroy();
+	};
   },
+
+
   
   
 };
