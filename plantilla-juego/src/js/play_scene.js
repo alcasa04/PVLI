@@ -23,10 +23,10 @@ var PlayScene = {
     logo.anchor.setTo(0.5, 0.5);
 	logo.destroy();
 	},
-  
+	
   create: function () 
   {  
-    this.game.physics.startSystem(Phaser.Physics.ARCADE);
+	this.game.physics.startSystem(Phaser.Physics.ARCADE);
 	  
 	prota = this.game.add.sprite(this.game.width/2-50, this.game.height-600, 'prota');
 	prota.width= 50;
