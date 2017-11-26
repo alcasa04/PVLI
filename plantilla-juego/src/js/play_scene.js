@@ -19,18 +19,18 @@ var PlayScene = {
 	preload: function()
 	{
 	var logo = this.game.add.sprite(
-    this.game.world.centerX, this.game.world.centerY, 'logo');
+    	this.game.world.centerX, this.game.world.centerY, 'logo');
     logo.anchor.setTo(0.5, 0.5);
 	logo.destroy();
 	},
-	
   
   create: function () 
   {  
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
 	  
 	prota = this.game.add.sprite(this.game.width/2-50, this.game.height-600, 'prota');
-	prota.width = prota.height = 50;
+	prota.width= 50;
+	prota.height = 75;
 	this.game.physics.arcade.enable(prota);
     prota.body.colliderWorldBounds = true;
 	prota.body.checkCollision.down = true;
@@ -51,8 +51,6 @@ var PlayScene = {
 	auxSueloY = sueloNormal.position.y
 	auxSueloX = sueloNormal.position.x
 	
-
-
 	this.teclas = this.game.input.keyboard.createCursorKeys();
   },
   
@@ -117,10 +115,6 @@ var PlayScene = {
 		  cabeza.destroy();
 	};
   },
-
-
-  
-  
 };
 
 module.exports = PlayScene;
