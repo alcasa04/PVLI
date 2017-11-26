@@ -13,6 +13,7 @@ var flipFlop = false;
 var flipFlop2 = false;
 var auxSueloY = 0;
 var auxSueloX = 0;
+function movible(objeto, posX, posY, spriteObj){};
 
 var PlayScene = {
 	
@@ -78,6 +79,7 @@ var PlayScene = {
 	    else if(prota.body.velocity.x <0)
 		  prota.body.velocity.x += 5;
 	  }
+	  
 	//Movimiento del prota
 	if(prota.body.velocity.y >= 150)
 	{
