@@ -85,6 +85,12 @@ var PlayScene = {
 	{
 		prota.body.velocity.y = 150;
 	}
+
+	if(prota.position.y < this.game.world.position.y){
+		prota.position.y = this.game.world.position.y;
+		prota.body.velocity.y = 150;
+	}
+
 	else if(!flipFlop2)
 	{
 		prota.body.velocity.y += velCaida;
