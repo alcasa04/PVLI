@@ -13,6 +13,7 @@ var flipFlop = false;
 var flipFlop2 = false;
 var auxSueloY = 0;
 var auxSueloX = 0;
+var flipFlop3 = false;
 function movible(objeto, posX, posY, spriteObj){};
 
 var PlayScene = {
@@ -60,8 +61,8 @@ var PlayScene = {
 	  var choque = this.game.physics.arcade.collide(prota, sueloNormal);
 	  var damageCabeza = this.game.physics.arcade.overlap(prota, cabeza);
 	  
-	  if(choque){
-
+	  if(choque)
+	  {
 		flipFlop2 = true;
 		prota.body.velocity.y = 0;
 		sueloNormal.body.velocity.y = 0;
@@ -69,7 +70,8 @@ var PlayScene = {
 		sueloNormal.position.y = auxSueloY;
 		sueloNormal.position.x = auxSueloX;
 	  }
-      else{
+      else
+	  {
 		  flipFlop2 = false;
 	  }
 	  if(flipFlop2)
@@ -80,6 +82,25 @@ var PlayScene = {
 		  prota.body.velocity.x += 5;
 	  }
 	  
+	//Movimiento del enemigo
+	if(enemigo.body.velocity.y >= 150)
+	{
+		enemigo.body.velocity.y = 150;
+	}
+	else if(enemigo.position.y <= this.game.height-100)
+	{
+		enemigo.body.velocity.y += velCaida;
+	}
+	if(enemigo.position.y >= this.game.height-100 && !flipFlop3)
+	{
+		enemigo.body.velocity.y -= fuerzaEmpuje;
+		flipFlop3 = true;
+	}
+	
+	else{
+		flipFlop3 = false;
+	}
+	
 	//Movimiento del prota
 	if(prota.body.velocity.y >= 150)
 	{
@@ -121,7 +142,7 @@ var PlayScene = {
 	if(damageCabeza)
 	{
 		  cabeza.destroy();
-	};
+	}
   },
 };
 
