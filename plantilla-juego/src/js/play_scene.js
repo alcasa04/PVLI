@@ -37,6 +37,7 @@ var PlayScene = {
     prota.body.colliderWorldBounds = true;
 	prota.body.checkCollision.down = true;
 	
+	this.teclas = this.game.input.keyboard.createCursorKeys();
 	enemigo = this.game.add.sprite(this.game.width-200, 200, 'enemigo');
 	enemigo.width = enemigo.height = 50;
 	this.game.physics.arcade.enable(enemigo);
@@ -53,7 +54,6 @@ var PlayScene = {
 	auxSueloY = sueloNormal.position.y
 	auxSueloX = sueloNormal.position.x
 	
-	this.teclas = this.game.input.keyboard.createCursorKeys();
   },
   
   update: function()
