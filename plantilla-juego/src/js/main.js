@@ -5,7 +5,7 @@ var PlayScene = require('./play_scene.js');
 
 var BootScene = {
   preload: function () {
-	  game.load.baseURL = 'https://alcasa04.github.io/PVLI/index.html';
+	  game.load.baseURL = 'https://alcasa04.github.io/PVLI/src/index.html';
 	  game.load.crossOrigin = 'anonymous';
     // load here assets required for the loading screen
     this.game.load.image('preloader_bar', 'images/preloader_bar.png');
