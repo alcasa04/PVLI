@@ -35,10 +35,15 @@ var PlayScene = {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 	prota.width= 50;
 	prota.height = 75;
 	prota.anchor.set(.5,0);
+=======
+	prota.width= 50;
+	prota.height = 75;
+>>>>>>> parent of 6afa658... Merge branch 'IA-y-comportamientos'
 =======
 	prota.width= 50;
 	prota.height = 75;
@@ -66,6 +71,7 @@ var PlayScene = {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	enemigo.anchor.set(0.5, 0.5);
 	this.game.physics.arcade.enable(enemigo);
 	enemigo.body.collideWorldBounds = false;
@@ -85,6 +91,9 @@ var PlayScene = {
 =======
 	this.game.physics.arcade.enable(enemigo);
 >>>>>>> parent of 6afa658... Merge branch 'IA-y-comportamientos'
+=======
+	this.game.physics.arcade.enable(enemigo);
+>>>>>>> parent of 6afa658... Merge branch 'IA-y-comportamientos'
 	enemigo.body.colliderWorldBounds = true;
 	cabeza = enemigo.addChild(this.game.add.sprite(0, -enemigo.height*3, 'cabeza'));
 	cabeza.height = cabeza.height*0.3;
@@ -93,6 +102,9 @@ var PlayScene = {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> parent of 6afa658... Merge branch 'IA-y-comportamientos'
+=======
 >>>>>>> parent of 6afa658... Merge branch 'IA-y-comportamientos'
 =======
 >>>>>>> parent of 6afa658... Merge branch 'IA-y-comportamientos'
@@ -108,7 +120,11 @@ var PlayScene = {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	sueloNormal.body.immovable = true;
+=======
+	sueloNormal.body.inmovable = true;
+>>>>>>> parent of 6afa658... Merge branch 'IA-y-comportamientos'
 =======
 	sueloNormal.body.inmovable = true;
 >>>>>>> parent of 6afa658... Merge branch 'IA-y-comportamientos'
@@ -133,8 +149,13 @@ var PlayScene = {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	  var choque2 = this.game.physics.arcade.collide(enemigo, sueloNormal);
 	  var damageCabeza = this.game.physics.arcade.overlap(prota, cabeza);
+=======
+	  var damageCabeza = this.game.physics.arcade.overlap(prota, cabeza);
+	  
+>>>>>>> parent of 6afa658... Merge branch 'IA-y-comportamientos'
 =======
 	  var damageCabeza = this.game.physics.arcade.overlap(prota, cabeza);
 	  
@@ -195,6 +216,7 @@ var PlayScene = {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	if(saltoEnemigo >= 35 && !flipFlop3 && this.game.rnd.integerInRange(0, 100) <= 4)
 	{
 		enemigo.body.velocity.y -= fuerzaEmpuje*1.5;
@@ -203,6 +225,8 @@ var PlayScene = {
 	}
 
 	
+=======
+>>>>>>> parent of 6afa658... Merge branch 'IA-y-comportamientos'
 =======
 >>>>>>> parent of 6afa658... Merge branch 'IA-y-comportamientos'
 =======
