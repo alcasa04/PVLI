@@ -5,8 +5,6 @@ var prota;
 var enemigo;
 var cabeza;
 var sueloNormal;
-var sueloNormal2;
-var sueloNormal3;
 var velCaida = 10;
 var teclas;
 var fuerzaEmpuje = 250;
@@ -35,6 +33,9 @@ var PlayScene = {
 	this.game.physics.startSystem(Phaser.Physics.ARCADE);
 	  
 	prota = this.game.add.sprite(this.game.width/2-50, this.game.height-600, 'prota');
+
+	prota.width= 50;
+	prota.height = 75;
 	prota.anchor.set(.5,0);
 	this.game.physics.arcade.enable(prota);
     prota.body.collideWorldBounds = false;
@@ -42,14 +43,13 @@ var PlayScene = {
 	
 	this.teclas = this.game.input.keyboard.createCursorKeys();
 	enemigo = this.game.add.sprite(this.game.width-200, 200, 'enemigo');
-	//enemigo.width = enemigo.height = 50;
-	enemigo.scale.x = enemigo.scale.y = 0.1;
+	enemigo.width = enemigo.height = 50;
 	enemigo.anchor.set(0.5, 0.5);
 	this.game.physics.arcade.enable(enemigo);
 	enemigo.body.collideWorldBounds = false;
 	cabeza = enemigo.addChild(this.game.add.sprite(0, -enemigo.height*7, 'cabeza'));
 	cabeza.anchor.set(0.5, 0.5);
-	cabeza.scale.y = cabeza.scale.y*0.3;
+	cabeza.height = cabeza.height*0.3;
 	this.game.physics.arcade.enable(cabeza);
 
 	
@@ -57,31 +57,17 @@ var PlayScene = {
 	sueloNormal.width = 250; sueloNormal.height = 100;
 	this.game.physics.arcade.enable(sueloNormal);
 	sueloNormal.body.immovable = true;
-	
-	sueloNormal2 = this.game.add.sprite(this.game.width-250, this.game.height-100, 'suelo');
-	sueloNormal2.width = 250; sueloNormal2.height = 100;
-	this.game.physics.arcade.enable(sueloNormal2);
-	sueloNormal2.body.immovable = true;
-	
-	sueloNormal3 = this.game.add.sprite(this.game.width/2-119, this.game.height/2-20, 'suelo');
-	sueloNormal3.width = 250; sueloNormal3.height = 50;
-	this.game.physics.arcade.enable(sueloNormal3);
-	sueloNormal3.body.immovable = true;
+	auxSueloY = sueloNormal.position.y
+	auxSueloX = sueloNormal.position.x
 	
   },
   
   update: function()
   {
 	  var choque = this.game.physics.arcade.collide(prota, sueloNormal);
-	  var choque2 = this.game.physics.arcade.collide(prota, sueloNormal2);
-	  var choque3 = this.game.physics.arcade.collide(prota, sueloNormal3);
-	  this.game.physics.arcade.collide(enemigo, sueloNormal);
-	  this.game.physics.arcade.collide(enemigo, sueloNormal2);
-	  this.game.physics.arcade.collide(enemigo, sueloNormal3);
-	  this.game.physics.arcade.collide(cabeza, sueloNormal3);
+	  var choque2 = this.game.physics.arcade.collide(enemigo, sueloNormal);
 	  var damageCabeza = this.game.physics.arcade.overlap(prota, cabeza);
-	  
-	  if(choque || choque2 || choque3)
+	  if(choque)
 	  {
 		flipFlop2 = true;
 	  }
@@ -154,6 +140,7 @@ var PlayScene = {
 		saltoEnemigo = 0;
 	}
 
+	
 	//Movimiento del prota
 
 	if(prota.body.velocity.y >= 150)
