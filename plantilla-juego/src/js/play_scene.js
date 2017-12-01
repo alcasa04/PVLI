@@ -33,7 +33,10 @@ var PlayScene = {
 	prota = this.game.add.sprite(this.game.width/2-50, this.game.height-600, 'prota');
 	prota.width= 50;
 	prota.height = 75;
+<<<<<<< HEAD
 	prota.anchor.set(.5,0);
+=======
+>>>>>>> parent of 6afa658... Merge branch 'IA-y-comportamientos'
 	this.game.physics.arcade.enable(prota);
     prota.body.colliderWorldBounds = true;
 	prota.body.checkCollision.down = true;
@@ -41,6 +44,7 @@ var PlayScene = {
 	this.teclas = this.game.input.keyboard.createCursorKeys();
 	enemigo = this.game.add.sprite(this.game.width-200, 200, 'enemigo');
 	enemigo.width = enemigo.height = 50;
+<<<<<<< HEAD
 	enemigo.anchor.set(0.5, 0.5);
 	this.game.physics.arcade.enable(enemigo);
 	enemigo.body.collideWorldBounds = false;
@@ -50,6 +54,9 @@ var PlayScene = {
 	this.game.physics.arcade.enable(cabeza);
 
 	this.game.physics.arcade.enable(enemigo);
+=======
+	this.game.physics.arcade.enable(enemigo);
+>>>>>>> parent of 6afa658... Merge branch 'IA-y-comportamientos'
 	enemigo.body.colliderWorldBounds = true;
 	cabeza = enemigo.addChild(this.game.add.sprite(0, -enemigo.height*3, 'cabeza'));
 	cabeza.height = cabeza.height*0.3;
@@ -59,14 +66,23 @@ var PlayScene = {
 	sueloNormal = this.game.add.sprite(0, this.game.height-100, 'suelo');
 	sueloNormal.width = 250; sueloNormal.height = 100;
 	this.game.physics.arcade.enable(sueloNormal);
+<<<<<<< HEAD
 	sueloNormal.body.immovable = true;
+=======
+	sueloNormal.body.inmovable = true;
+	auxSueloY = sueloNormal.position.y
+	auxSueloX = sueloNormal.position.x
+>>>>>>> parent of 6afa658... Merge branch 'IA-y-comportamientos'
 	
   },
   
   update: function()
   {
 	  var choque = this.game.physics.arcade.collide(prota, sueloNormal);
+<<<<<<< HEAD
 	  var choque2 = this.game.physics.arcade.collide(enemigo, sueloNormal);
+=======
+>>>>>>> parent of 6afa658... Merge branch 'IA-y-comportamientos'
 	  var damageCabeza = this.game.physics.arcade.overlap(prota, cabeza);
 	  
 	  if(choque)
@@ -109,13 +125,6 @@ var PlayScene = {
 		flipFlop3 = false;
 	}
 	
-	if(saltoEnemigo >= 35 && !flipFlop3 && this.game.rnd.integerInRange(0, 100) <= 4)
-	{
-		enemigo.body.velocity.y -= fuerzaEmpuje*1.5;
-		flipFlop3 = true;
-		saltoEnemigo = 0;
-	}
-
 	//Movimiento del prota
 	if(prota.body.velocity.y >= 150)
 	{
