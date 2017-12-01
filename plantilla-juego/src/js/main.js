@@ -5,8 +5,10 @@ var PlayScene = require('./play_scene.js');
 
 var BootScene = {
   preload: function () {
+	  this.game.load.baseURLR = 'http:/alcasa04.github.io/PVLI/plantilla-juego/src/index.html';
+	  this.game.load.crossOrigin = 'anonymous';
     // load here assets required for the loading screen
-    this.game.load.image('preloader_bar', 'images/preloader_bar.png');
+    //this.game.load.image('preloader_bar', 'images/preloader_bar.png');
 	this.game.load.image('logo', 'images/Phaser.png');
 	this.game.load.image('prota', 'images/Personaje.png');
 	this.game.load.image('enemigo', 'images/enemigo.png');
@@ -22,9 +24,9 @@ var BootScene = {
 
 var PreloaderScene = {
   preload: function () {
-    this.loadingBar = this.game.add.sprite(0, 240, 'preloader_bar');
-    this.loadingBar.anchor.setTo(0, 0.5);
-    this.load.setPreloadSprite(this.loadingBar);
+    //this.loadingBar = this.game.add.sprite(0, 240, 'preloader_bar');
+    //this.loadingBar.anchor.setTo(0, 0.5);
+    //this.load.setPreloadSprite(this.loadingBar);
     // TODO: load here the assets for the game
     this.logo = this.game.add.sprite('logo');
 
