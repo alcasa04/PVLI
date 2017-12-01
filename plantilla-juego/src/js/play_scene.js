@@ -18,27 +18,103 @@ var auxSueloX = 0;
 var flipFlop3 = false;
 var dirEnemigo = false;
 var saltoEnemigo = 0;
+var teclas;
+	var Movible = function(game, spriteObj, posX, posY)
+	{
+		Phaser.Sprite.call(this, game, posX, posY, spriteObj);
+		game.physics.arcade.enable(this);
+		this.anchor.set(.5,0);
+	}
+	Movible.prototype = Object.create(Phaser.Sprite.prototype);
+	Movible.constructor = Movible;
+	Movible.prototype.update= function()
+	{
+	var damageCabeza = this.game.physics.arcade.overlap(prota, cabeza);
+		if(damageCabeza)
+	{
+		  cabeza.destroy();
+	}
+	var choque = this.game.physics.arcade.collide(this, sueloNormal);
+	var choque2 = this.game.physics.arcade.collide(this, sueloNormal2);
+	var choque3 = this.game.physics.arcade.collide(this, sueloNormal3);
+	if(choque || choque2 || choque3)
+	  {
+		flipFlop2 = true;
+	  }
+      else
+	  {
+		  flipFlop2 = false;
+	  }
+	  if(flipFlop2)
+	  {
+		if(this.body.velocity.x > 0)
+		  this.body.velocity.x -= 5;
+	    else if(prota.body.velocity.x <0)
+		  this.body.velocity.x += 5;
+	  }
+	  if(prota.body.velocity.y >= 150)
+	{
+		prota.body.velocity.y = 150;
+	}
+	if(prota.position.y < this.game.world.position.y){
+		prota.position.y = this.game.world.position.y;
+		prota.body.velocity.y = 150;
+	}
+	if(prota.position.x > this.game.width)
+	{
+		prota.position.x = 0;
+	}
+	else if(prota.position.x < 0)
+	{
+		prota.position.x = this.game.width;
+	}
+	
 
-
+	else if(!flipFlop2)
+	{
+		prota.body.velocity.y += velCaida;
+	}
+	if(teclas.up.isDown)
+	{
+		flipFlop2 = false;
+		if(!flipFlop)
+		{
+			prota.body.velocity.y = 0;
+			prota.body.velocity.y -= fuerzaEmpuje;
+			flipFlop = true;
+		}
+	}
+	else if(teclas.up.isUp)
+	{
+		flipFlop = false;
+	}
+	if(teclas.left.isDown && prota.body.velocity.x > -200)
+	{
+		prota.body.velocity.x -= velocidadProta;
+		prota.scale.setTo(-1, 1);
+	}
+	if(teclas.right.isDown && prota.body.velocity.x < 200)
+	{
+			prota.body.velocity.x += velocidadProta;
+			prota.scale.setTo(1, 1);
+	}
+	}
 var PlayScene = {
 	
 	preload: function()
 	{
 	var logo = this.game.add.sprite(
-    	this.game.world.centerX, this.game.world.centerY, 'logo');
+    this.game.world.centerX, this.game.world.centerY, 'logo');
     logo.anchor.setTo(0.5, 0.5);
 	logo.destroy();
 	},
 	
   create: function () 
   {  
+    teclas = this.game.input.keyboard.createCursorKeys();
+	prota = this.game.world.addChild(new Movible(this.game,'prota', this.game.width/2-50, this.game.height-600));
 	this.game.physics.startSystem(Phaser.Physics.ARCADE);
-	  
-	prota = this.game.add.sprite(this.game.width/2-50, this.game.height-600, 'prota');
-	prota.anchor.set(.5,0);
-	this.game.physics.arcade.enable(prota);
-    prota.body.collideWorldBounds = false;
-	prota.body.checkCollision.down = true;
+
 	
 	this.teclas = this.game.input.keyboard.createCursorKeys();
 	enemigo = this.game.add.sprite(this.game.width-200, 200, 'enemigo');
@@ -72,30 +148,10 @@ var PlayScene = {
   
   update: function()
   {
-	  var choque = this.game.physics.arcade.collide(prota, sueloNormal);
-	  var choque2 = this.game.physics.arcade.collide(prota, sueloNormal2);
-	  var choque3 = this.game.physics.arcade.collide(prota, sueloNormal3);
 	  this.game.physics.arcade.collide(enemigo, sueloNormal);
 	  this.game.physics.arcade.collide(enemigo, sueloNormal2);
 	  this.game.physics.arcade.collide(enemigo, sueloNormal3);
 	  this.game.physics.arcade.collide(cabeza, sueloNormal3);
-	  var damageCabeza = this.game.physics.arcade.overlap(prota, cabeza);
-	  
-	  if(choque || choque2 || choque3)
-	  {
-		flipFlop2 = true;
-	  }
-      else
-	  {
-		  flipFlop2 = false;
-	  }
-	  if(flipFlop2)
-	  {
-		if(prota.body.velocity.x > 0)
-		  prota.body.velocity.x -= 5;
-	    else if(prota.body.velocity.x <0)
-		  prota.body.velocity.x += 5;
-	  }
 	  
 	//Movimiento del enemigo
 	saltoEnemigo ++;
@@ -152,61 +208,7 @@ var PlayScene = {
 		enemigo.body.velocity.y -= fuerzaEmpuje*1.5;
 		flipFlop3 = true;
 		saltoEnemigo = 0;
-	}
-
-	//Movimiento del prota
-
-	if(prota.body.velocity.y >= 150)
-	{
-		prota.body.velocity.y = 150;
-	}
-	if(prota.position.y < this.game.world.position.y){
-		prota.position.y = this.game.world.position.y;
-		prota.body.velocity.y = 150;
-	}
-	if(prota.position.x > this.game.width)
-	{
-		prota.position.x = 0;
-	}
-	else if(prota.position.x < 0)
-	{
-		prota.position.x = this.game.width;
-	}
-	
-
-	else if(!flipFlop2)
-	{
-		prota.body.velocity.y += velCaida;
-	}
-	if(this.teclas.up.isDown)
-	{
-		flipFlop2 = false;
-		if(!flipFlop)
-		{
-			prota.body.velocity.y = 0;
-			prota.body.velocity.y -= fuerzaEmpuje;
-			flipFlop = true;
-		}
-	}
-	else if(this.teclas.up.isUp)
-	{
-		flipFlop = false;
-	}
-	if(this.teclas.left.isDown && prota.body.velocity.x > -200)
-	{
-		prota.body.velocity.x -= velocidadProta;
-		prota.scale.setTo(-1, 1);
-	}
-	if(this.teclas.right.isDown && prota.body.velocity.x < 200)
-	{
-			prota.body.velocity.x += velocidadProta;
-			prota.scale.setTo(1, 1);
-	}
-	
-	if(damageCabeza)
-	{
-		  cabeza.destroy();
-	}
+	}		
   },
 };
 
