@@ -14,9 +14,7 @@ var flipFlop2 = false;
 var auxSueloY = 0;
 var auxSueloX = 0;
 var flipFlop3 = false;
-var dirEnemigo = false;
-var saltoEnemigo = 0;
-
+function movible(objeto, posX, posY, spriteObj){};
 
 var PlayScene = {
 	
@@ -33,17 +31,23 @@ var PlayScene = {
 	this.game.physics.startSystem(Phaser.Physics.ARCADE);
 	  
 	prota = this.game.add.sprite(this.game.width/2-50, this.game.height-600, 'prota');
+<<<<<<< HEAD
 
 	prota.width= 50;
 	prota.height = 75;
 	prota.anchor.set(.5,0);
+=======
+	prota.width= 50;
+	prota.height = 75;
+>>>>>>> parent of 6afa658... Merge branch 'IA-y-comportamientos'
 	this.game.physics.arcade.enable(prota);
-    prota.body.collideWorldBounds = false;
+    prota.body.colliderWorldBounds = true;
 	prota.body.checkCollision.down = true;
 	
 	this.teclas = this.game.input.keyboard.createCursorKeys();
 	enemigo = this.game.add.sprite(this.game.width-200, 200, 'enemigo');
 	enemigo.width = enemigo.height = 50;
+<<<<<<< HEAD
 	enemigo.anchor.set(0.5, 0.5);
 	this.game.physics.arcade.enable(enemigo);
 	enemigo.body.collideWorldBounds = false;
@@ -52,11 +56,23 @@ var PlayScene = {
 	cabeza.height = cabeza.height*0.3;
 	this.game.physics.arcade.enable(cabeza);
 
+=======
+	this.game.physics.arcade.enable(enemigo);
+	enemigo.body.colliderWorldBounds = true;
+	cabeza = enemigo.addChild(this.game.add.sprite(0, -enemigo.height*3, 'cabeza'));
+	cabeza.height = cabeza.height*0.3;
+    this.game.physics.arcade.enable(cabeza);
+	cabeza.body.colliderWorldBounds = true;
+>>>>>>> parent of 6afa658... Merge branch 'IA-y-comportamientos'
 	
 	sueloNormal = this.game.add.sprite(0, this.game.height-100, 'suelo');
 	sueloNormal.width = 250; sueloNormal.height = 100;
 	this.game.physics.arcade.enable(sueloNormal);
+<<<<<<< HEAD
 	sueloNormal.body.immovable = true;
+=======
+	sueloNormal.body.inmovable = true;
+>>>>>>> parent of 6afa658... Merge branch 'IA-y-comportamientos'
 	auxSueloY = sueloNormal.position.y
 	auxSueloX = sueloNormal.position.x
 	
@@ -65,11 +81,21 @@ var PlayScene = {
   update: function()
   {
 	  var choque = this.game.physics.arcade.collide(prota, sueloNormal);
+<<<<<<< HEAD
 	  var choque2 = this.game.physics.arcade.collide(enemigo, sueloNormal);
 	  var damageCabeza = this.game.physics.arcade.overlap(prota, cabeza);
+=======
+	  var damageCabeza = this.game.physics.arcade.overlap(prota, cabeza);
+	  
+>>>>>>> parent of 6afa658... Merge branch 'IA-y-comportamientos'
 	  if(choque)
 	  {
 		flipFlop2 = true;
+		prota.body.velocity.y = 0;
+		sueloNormal.body.velocity.y = 0;
+		sueloNormal.body.velocity.x = 0;
+		sueloNormal.position.y = auxSueloY;
+		sueloNormal.position.x = auxSueloX;
 	  }
       else
 	  {
@@ -84,7 +110,6 @@ var PlayScene = {
 	  }
 	  
 	//Movimiento del enemigo
-	saltoEnemigo ++;
 	if(enemigo.body.velocity.y >= 150)
 	{
 		enemigo.body.velocity.y = 150;
@@ -93,46 +118,17 @@ var PlayScene = {
 	{
 		enemigo.body.velocity.y += velCaida;
 	}
-	if(enemigo.position.x > this.game.width)
-	{
-		enemigo.position.x = 0;
-	}
-	else if(enemigo.position.x < 0)
-	{
-		enemigo.position.x = this.game.width;
-	}
-	if(enemigo.position.y <= this.game.world.position.y)
-	{
-		enemigo.body.velocity.y = 150;
-	}
 	if(enemigo.position.y >= this.game.height-100 && !flipFlop3)
 	{
 		enemigo.body.velocity.y -= fuerzaEmpuje;
 		flipFlop3 = true;
 	}
-	else
-	{
+	
+	else{
 		flipFlop3 = false;
-		if(enemigo.position.y >= this.game.height-100)
-		saltoEnemigo = 0;
-	}
-	if(enemigo.body.velocity.x < 150 && dirEnemigo == false)
-	{
-		enemigo.body.velocity.x+=5;
-	}
-	else if(enemigo.body.velocity.x > -150 && dirEnemigo == true)
-	{
-		enemigo.body.velocity.x-=5;
-	}
-	if(enemigo.body.velocity.x >= 150 && this.game.rnd.integerInRange(0, 200) <= 1)
-	{
-		dirEnemigo = true;
-	}
-	else if(enemigo.body.velocity.x <= -150 && this.game.rnd.integerInRange(0, 200) <= 1)
-	{
-		dirEnemigo = false;
 	}
 	
+<<<<<<< HEAD
 	if(saltoEnemigo >= 35 && !flipFlop3 && this.game.rnd.integerInRange(0, 100) <= 4)
 	{
 		enemigo.body.velocity.y -= fuerzaEmpuje*1.5;
@@ -141,25 +137,18 @@ var PlayScene = {
 	}
 
 	
+=======
+>>>>>>> parent of 6afa658... Merge branch 'IA-y-comportamientos'
 	//Movimiento del prota
-
 	if(prota.body.velocity.y >= 150)
 	{
 		prota.body.velocity.y = 150;
 	}
+
 	if(prota.position.y < this.game.world.position.y){
 		prota.position.y = this.game.world.position.y;
 		prota.body.velocity.y = 150;
 	}
-	if(prota.position.x > this.game.width)
-	{
-		prota.position.x = 0;
-	}
-	else if(prota.position.x < 0)
-	{
-		prota.position.x = this.game.width;
-	}
-	
 
 	else if(!flipFlop2)
 	{
@@ -182,12 +171,10 @@ var PlayScene = {
 	if(this.teclas.left.isDown && prota.body.velocity.x > -200)
 	{
 		prota.body.velocity.x -= velocidadProta;
-		prota.scale.setTo(-1, 1);
 	}
 	if(this.teclas.right.isDown && prota.body.velocity.x < 200)
 	{
 			prota.body.velocity.x += velocidadProta;
-			prota.scale.setTo(1, 1);
 	}
 	
 	if(damageCabeza)
