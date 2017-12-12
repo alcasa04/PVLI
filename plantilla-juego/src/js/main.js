@@ -7,8 +7,8 @@ var BootScene = {
   preload: function () {
 	  this.game.load.baseURLR = 'http:/alcasa04.github.io/PVLI/plantilla-juego/src/index.html';
 	  this.game.load.crossOrigin = 'anonymous';
-    // load here assets required for the loading screen
-    //this.game.load.image('preloader_bar', 'images/preloader_bar.png');
+	  
+	  
 	this.game.load.image('logo', 'images/Phaser.png');
 	this.game.load.spritesheet('prota', 'images/PersonajeSpriteSheet.png', 50, 70);
 	this.game.load.spritesheet('enemigo', 'images/enemigo.png', 70, 110);

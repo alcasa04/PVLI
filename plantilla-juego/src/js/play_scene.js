@@ -192,7 +192,6 @@ var Movible = function(game, spriteObj, posX, posY)
 		else if(this.auxInvencible >= this.invencible)
 		{			
 	       this.esInven = false;
-		   //this.inv = this.game.add.sprite(200, 0, 'prota');
 		}
 	}
 var Enemigo = function (game, sprite, posX, posY)
@@ -331,12 +330,11 @@ var PlayScene =
 	
   create: function () 
   {  
-  
     teclas = this.game.input.keyboard.createCursorKeys();
 	this.game.physics.startSystem(Phaser.Physics.ARCADE);
     background = this.game.add.tileSprite(0, 0, 1000, 600, 'background');
+	
 	rayo = this.game.world.addChild(this.game.add.sprite(this.game.width/2-190, this.game.height-70, 'rayo'));
-
 	this.game.physics.arcade.enable(rayo);
 	rayo.width = 380;
 	rayo.height = rayo.height*(38/30); 
