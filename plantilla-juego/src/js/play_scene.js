@@ -312,7 +312,6 @@ Enemigo.prototype.update = function()
 		this.frame = 1;
 		this.auxAnim = 0;
 		this.body.velocity.y -= fuerzaEmpuje;
-		this.body.velocity.y -= fuerzaEmpuje*1.5;
 		flipFlop3 = true;
 		saltoEnemigo = 0;
 	}		
@@ -330,6 +329,7 @@ var PlayScene =
 	
   create: function () 
   {  
+    background = this.game.add.tileSprite(0, 0, 1000, 600, 'background');
     teclas = this.game.input.keyboard.createCursorKeys();
 	this.game.physics.startSystem(Phaser.Physics.ARCADE);
     background = this.game.add.tileSprite(0, 0, 1000, 600, 'background');
@@ -340,11 +340,7 @@ var PlayScene =
 	rayo.height = rayo.height*(38/30); 
 	rayo.frame = 6;
 
-    //grupoPhysics = this.game.add.group();
-    background = this.game.add.tileSprite(0, 0, 1000, 600, 'background');
-    //grupoPhysics = this.game.add.group();
-    teclas = this.game.input.keyboard.createCursorKeys();
-	this.game.physics.startSystem(Phaser.Physics.ARCADE);
+
 	
 	this.teclas = this.game.input.keyboard.createCursorKeys();
 	this.game.world.addChild(new Enemigo(this.game, 'enemigo', this.game.width-200, 200));
