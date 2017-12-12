@@ -18,9 +18,12 @@ var flipFlop3 = false;
 var saltoEnemigo = 0;
 var teclas;
 var background;
+<<<<<<< HEAD
 var rayo;
 var animRayo = 3;
 var auxRayo = 0;
+=======
+>>>>>>> ba07d7db640bc5b6ef85c9044bbed84ed2ce7f00
 var muere = function(game, sprite, posX, posY, escala)
 {
 	Phaser.Sprite.call(this, game, posX, posY, sprite);
@@ -150,6 +153,7 @@ var Movible = function(game, spriteObj, posX, posY)
 			prota.body.velocity.x += velocidadProta;
 			prota.scale.setTo(1, 1);
 	}
+<<<<<<< HEAD
 		if(this.game.physics.arcade.overlap(this, rayo))
 	{
 		this.destroy();
@@ -158,6 +162,12 @@ var Movible = function(game, spriteObj, posX, posY)
 		if(this.esInven)
 		this.invencibilidad();
 	}
+=======
+		this.muerte();
+		if(this.esInven)
+		this.invencibilidad();
+	}
+>>>>>>> ba07d7db640bc5b6ef85c9044bbed84ed2ce7f00
 	Movible.prototype.muerte = function()
 	{
 		if(this.vidas <= 0)
@@ -308,7 +318,11 @@ Enemigo.prototype.update = function()
 	{
 		this.frame = 1;
 		this.auxAnim = 0;
+<<<<<<< HEAD
 		this.body.velocity.y -= fuerzaEmpuje;
+=======
+		this.body.velocity.y -= fuerzaEmpuje*1.5;
+>>>>>>> ba07d7db640bc5b6ef85c9044bbed84ed2ce7f00
 		flipFlop3 = true;
 		saltoEnemigo = 0;
 	}		
@@ -325,6 +339,7 @@ var PlayScene = {
 	
   create: function () 
   {  
+<<<<<<< HEAD
     teclas = this.game.input.keyboard.createCursorKeys();
 	this.game.physics.startSystem(Phaser.Physics.ARCADE);
 	
@@ -337,6 +352,12 @@ var PlayScene = {
 
     //grupoPhysics = this.game.add.group();
 
+=======
+    background = this.game.add.tileSprite(0, 0, 1000, 600, 'background');
+    //grupoPhysics = this.game.add.group();
+    teclas = this.game.input.keyboard.createCursorKeys();
+	this.game.physics.startSystem(Phaser.Physics.ARCADE);
+>>>>>>> ba07d7db640bc5b6ef85c9044bbed84ed2ce7f00
 	
 	this.teclas = this.game.input.keyboard.createCursorKeys();
 	this.game.world.addChild(new Enemigo(this.game, 'enemigo', this.game.width-200, 200));
@@ -365,6 +386,7 @@ var PlayScene = {
   
   update: function()
   {
+<<<<<<< HEAD
 	  	auxRayo++;
 	if(auxRayo>animRayo)
 	{
@@ -375,6 +397,8 @@ var PlayScene = {
 		}
 		rayo.frame --;
 	}
+=======
+>>>>>>> ba07d7db640bc5b6ef85c9044bbed84ed2ce7f00
 	 background.tilePosition.x += 0.5;
   },
 };
