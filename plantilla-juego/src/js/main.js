@@ -10,10 +10,15 @@ var BootScene = {
     // load here assets required for the loading screen
     //this.game.load.image('preloader_bar', 'images/preloader_bar.png');
 	this.game.load.image('logo', 'images/Phaser.png');
-	this.game.load.image('prota', 'images/Personaje.png');
-	this.game.load.image('enemigo', 'images/enemigo.png');
+	this.game.load.spritesheet('prota', 'images/PersonajeSpriteSheet.png', 50, 70);
+	this.game.load.spritesheet('enemigo', 'images/enemigo.png', 70, 110);
 	this.game.load.image('suelo', 'images/suelo.png');
+	this.game.load.image('suelo2', 'images/suelo2.png');
 	this.game.load.image('cabeza', 'images/cabezaEnemigo.png');
+	this.game.load.spritesheet('enemigoMuere', 'images/enemigoMuere.png', 80, 115);
+	this.game.load.image('background', 'images/background.png');
+	this.game.load.image('ventana', 'images/ventana.png');
+	this.game.load.spritesheet('rayo', 'images/Lightning.png', 300, 50);
   },
 
   create: function () {
