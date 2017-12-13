@@ -1,6 +1,7 @@
 'use strict';
 
 var PlayScene = require('./play_scene.js');
+var Menu = require('./menu.js');
 
 
 var BootScene = {
@@ -20,6 +21,7 @@ var BootScene = {
 	this.game.load.image('background', 'images/background.png');
 	this.game.load.image('ventana', 'images/ventana.png');
 	this.game.load.spritesheet('rayo', 'images/Lightning.png', 300, 50);
+	this.game.load.image('menu', 'images/Menu.jpg');
   },
 
   create: function () {
@@ -30,17 +32,12 @@ var BootScene = {
 
 var PreloaderScene = {
   preload: function () {
-    //this.loadingBar = this.game.add.sprite(0, 240, 'preloader_bar');
-    //this.loadingBar.anchor.setTo(0, 0.5);
-    //this.load.setPreloadSprite(this.loadingBar);
-    // TODO: load here the assets for the game
-    //this.logo = this.game.add.sprite('logo');
 
 	
   },
 
   create: function () {
-    this.game.state.start('play');
+    this.game.state.start('menu');
   }
 };
 
@@ -53,7 +50,7 @@ window.onload = function () {
   game.state.add('boot', BootScene);
   game.state.add('preloader', PreloaderScene);
   game.state.add('play', PlayScene);
-
+  game.state.add('menu', Menu);
   game.state.start('boot');
   
   
