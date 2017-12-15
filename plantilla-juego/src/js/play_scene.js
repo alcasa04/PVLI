@@ -307,7 +307,7 @@ Enemigo.prototype.update = function()
 		this.dirEnemigo = false;
 	}
 	
-	if(saltoEnemigo >= 35 && !flipFlop3 && this.game.rnd.integerInRange(0, 100) <= 6)
+	if(saltoEnemigo >= 35 && !flipFlop3 && this.game.rnd.integerInRange(0, 100) <= 7)
 	{
 		this.frame = 1;
 		this.auxAnim = 0;
@@ -382,6 +382,11 @@ var PlayScene =
 	}
 	
 	 background.tilePosition.x += 0.5;
+	 background.anchor.set(.5, .5);
+	 background.width = background.height = 3000;
+	 background.position.x = this.game.width/2;
+	 background.position.y = this.game.height/2;
+	 background.rotation += 0.0005;
   },
 };
 

@@ -21,7 +21,8 @@ var BootScene = {
 	this.game.load.image('background', 'images/background.png');
 	this.game.load.image('ventana', 'images/ventana.png');
 	this.game.load.spritesheet('rayo', 'images/Lightning.png', 300, 50);
-	this.game.load.image('menu', 'images/Menu.jpg');
+	this.game.load.spritesheet('menu', 'images/Menu.png', 880, 650);
+	this.game.load.image('flecha', 'images/Flecha.png');
   },
 
   create: function () {
