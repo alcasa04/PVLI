@@ -1,30 +1,42 @@
 'use strict';
 
-
+//Declaración de variables
 var prota;
 var enemigo;
 var sueloNormal;
 var sueloNormal2;
 var sueloNormal3;
 var velCaida = 10;
+
+//entrada de teclado
 var teclas;
+
 var fuerzaEmpuje = 250;
 var velocidadProta = 10;
+
+//auxiliares para el salto y choques
 var flipFlop = false;
 var flipFlop2 = false;
 var auxSueloY = 0;
 var auxSueloX = 0;
 var flipFlop3 = false;
 var saltoEnemigo = 0;
-var teclas;
+//var teclas;
+
+//el fondo
 var background;
+
+//variables empleadas en los rayos
 var rayo;
 var animRayo = 3;
 var auxRayo = 0;
 
+//los enemigos al morir lo que hacen es desaparecer y generar un sprite de enemigo en caida
 var muere = function(game, sprite, posX, posY, escala)
 {
 	Phaser.Sprite.call(this, game, posX, posY, sprite);
+
+	//ajustes del enemigo en caida
   	game.physics.arcade.enable(this);
 	this.anchor.set(.5,.5);
 	this.vel = 5;
@@ -34,8 +46,10 @@ var muere = function(game, sprite, posX, posY, escala)
 
 	
 }
+
 muere.prototype = Object.create(Phaser.Sprite.prototype);
 muere.constructor = muere;
+
 muere.prototype.update = function()
 {
 	this.body.velocity.y += this.vel;
@@ -55,6 +69,7 @@ muere.prototype.update = function()
 	}
 }
 
+//clase movible, permite que un objeto se mueva
 var Movible = function(game, spriteObj, posX, posY)
 	{
 		Phaser.Sprite.call(this, game, posX, posY, spriteObj);
