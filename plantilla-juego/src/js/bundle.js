@@ -1,42 +1,174 @@
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 'use strict';
 
-//Declaración de variables
+var PlayScene = require('./play_scene.js');
+var Menu = require('./menu.js');
+
+
+var BootScene = {
+  preload: function () {
+	  this.game.load.baseURLR = 'http:/alcasa04.github.io/PVLI/plantilla-juego/src/index.html';
+	  this.game.load.crossOrigin = 'anonymous';
+	  
+	  
+	this.game.load.image('logo', 'images/Phaser.png');
+	this.game.load.spritesheet('prota', 'images/PersonajeSpriteSheet.png', 50, 70);
+	this.game.load.spritesheet('enemigo', 'images/enemigo.png', 70, 110);
+	this.game.load.spritesheet('enemigo', 'images/enemigo.png', 75, 115);
+	this.game.load.image('suelo', 'images/suelo.png');
+	this.game.load.image('suelo2', 'images/suelo2.png');
+	this.game.load.image('cabeza', 'images/cabezaEnemigo.png');
+	this.game.load.spritesheet('enemigoMuere', 'images/enemigoMuere.png', 80, 115);
+	this.game.load.image('background', 'images/background.png');
+	this.game.load.image('ventana', 'images/ventana.png');
+	this.game.load.spritesheet('rayo', 'images/Lightning.png', 300, 50);
+	this.game.load.spritesheet('menu', 'images/Menu.png', 880, 650);
+	this.game.load.image('flecha', 'images/Flecha.png');
+  },
+
+  create: function () {
+    this.game.state.start('preloader');
+  }
+};
+
+
+var PreloaderScene = {
+  preload: function () {
+
+	
+  },
+
+  create: function () {
+    this.game.state.start('menu');
+  }
+};
+
+
+window.onload = function () {
+  var game = new Phaser.Game(800, 600, Phaser.AUTO, 'game');
+  
+
+	
+  game.state.add('boot', BootScene);
+  game.state.add('preloader', PreloaderScene);
+  game.state.add('play', PlayScene);
+  game.state.add('menu', Menu);
+  game.state.start('boot');
+  
+  
+
+};
+
+},{"./menu.js":2,"./play_scene.js":3}],2:[function(require,module,exports){
+'use strict';
+
+
+var teclas;
+var foto;
+var anim = 10;
+var auxAnim = 0;
+var seleccion = 1;
+var flipFlop1 = false;
+var flipFlop2 = false;
+var flecha;
+
+var Menu = 
+{
+	
+	preload: function()
+	{
+		
+	},
+	
+  create: function () 
+  {  
+
+    teclas = this.game.input.keyboard.createCursorKeys();
+	this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+    foto = this.game.add.sprite(0, 0, 'menu');
+	foto.width = this.game.width;
+	foto.height = this.game.height-100;
+	foto.position.y = this.game.height/2-foto.height/2.5;
+	flecha = this.game.add.sprite(180, 0, 'flecha');
+	//this.game.state.start('play');
+  },
+  
+  update: function()
+  {  
+	  
+	  auxAnim ++;
+	  if(this.game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR) && seleccion == 1)
+	  {
+		  this.game.state.start('play');
+	  }
+	  if((teclas.up.isDown || teclas.down.isDown) && !flipFlop1 && !flipFlop2)
+	  {
+		  auxAnim = 0;
+		  flipFlop1 = true;
+		  flipFlop2 = true;
+		  if(seleccion == 1)seleccion = 2;
+		  else seleccion = 1;
+	  }
+	  if(teclas.up.isUp) flipFlop1 = false;
+	  if(teclas.down.isUp)flipFlop2 = false;
+	  if(seleccion == 1 && auxAnim < anim)
+	  {
+		  foto.frame = 1;
+	  }
+	  else if(seleccion == 2 && auxAnim < anim)
+	  {
+		  foto.frame = 2;
+	  }
+	  if(auxAnim > anim)
+	  {
+		  foto.frame = 0;
+	  }
+	  if(auxAnim > anim*2)
+	  {
+
+		  auxAnim = 0;
+	  }
+	  		  if(seleccion == 1)
+		  {			  
+	       flecha.position.y = 365;
+		  }
+		  else
+		  {
+			  flecha.position.y = 465;
+		  }
+  },
+};
+
+module.exports = Menu;
+//comentario final
+},{}],3:[function(require,module,exports){
+'use strict';
+
+
 var prota;
 var enemigo;
 var sueloNormal;
 var sueloNormal2;
 var sueloNormal3;
 var velCaida = 10;
-
-//entrada de teclado
 var teclas;
-
 var fuerzaEmpuje = 250;
 var velocidadProta = 10;
-
-//auxiliares para el salto y choques
 var flipFlop = false;
 var flipFlop2 = false;
 var auxSueloY = 0;
 var auxSueloX = 0;
 var flipFlop3 = false;
 var saltoEnemigo = 0;
-//var teclas;
-
-//el fondo
+var teclas;
 var background;
-
-//variables empleadas en los rayos
 var rayo;
 var animRayo = 3;
 var auxRayo = 0;
 
-//los enemigos al morir lo que hacen es desaparecer y generar un sprite de enemigo en caida
 var muere = function(game, sprite, posX, posY, escala)
 {
 	Phaser.Sprite.call(this, game, posX, posY, sprite);
-
-	//ajustes del enemigo en caida
   	game.physics.arcade.enable(this);
 	this.anchor.set(.5,.5);
 	this.vel = 5;
@@ -46,10 +178,8 @@ var muere = function(game, sprite, posX, posY, escala)
 
 	
 }
-
 muere.prototype = Object.create(Phaser.Sprite.prototype);
 muere.constructor = muere;
-
 muere.prototype.update = function()
 {
 	this.body.velocity.y += this.vel;
@@ -69,7 +199,6 @@ muere.prototype.update = function()
 	}
 }
 
-//clase movible, permite que un objeto se mueva
 var Movible = function(game, spriteObj, posX, posY)
 	{
 		Phaser.Sprite.call(this, game, posX, posY, spriteObj);
@@ -407,3 +536,4 @@ var PlayScene =
 
 module.exports = PlayScene;
 //comentario final
+},{}]},{},[1]);
