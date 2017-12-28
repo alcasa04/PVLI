@@ -28,7 +28,6 @@ var Menu =
 	foto.height = this.game.height-100;
 	foto.position.y = this.game.height/2-foto.height/2.5;
 	flecha = this.game.add.sprite(180, 0, 'flecha');
-	//this.game.state.start('play');
   },
   
   update: function()
@@ -38,6 +37,10 @@ var Menu =
 	  if(this.game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR) && seleccion == 1)
 	  {
 		  this.game.state.start('play');
+	  }
+	  else if(this.game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR))
+	  {
+		  this.game.state.start('Versus');
 	  }
 	  if((teclas.up.isDown || teclas.down.isDown) && !flipFlop1 && !flipFlop2)
 	  {
@@ -78,4 +81,3 @@ var Menu =
 };
 
 module.exports = Menu;
-//comentario final

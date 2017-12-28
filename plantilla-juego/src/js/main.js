@@ -2,6 +2,7 @@
 
 var PlayScene = require('./play_scene.js');
 var Menu = require('./menu.js');
+var Versus = require('./Versus.js');
 
 
 var BootScene = {
@@ -12,6 +13,7 @@ var BootScene = {
 	  
 	this.game.load.image('logo', 'images/Phaser.png');
 	this.game.load.spritesheet('prota', 'images/PersonajeSpriteSheet.png', 50, 70);
+	this.game.load.spritesheet('prota2', 'images/PersonajeSpriteSheet2.png', 50, 70);
 	this.game.load.spritesheet('enemigo', 'images/enemigo.png', 70, 110);
 	this.game.load.spritesheet('enemigo', 'images/enemigo.png', 75, 115);
 	this.game.load.image('suelo', 'images/suelo.png');
@@ -51,6 +53,7 @@ window.onload = function () {
   game.state.add('boot', BootScene);
   game.state.add('preloader', PreloaderScene);
   game.state.add('play', PlayScene);
+  game.state.add('Versus', Versus);
   game.state.add('menu', Menu);
   game.state.start('boot');
   
