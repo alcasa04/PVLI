@@ -92,7 +92,8 @@ var Movible = function(game, spriteObj, posX, posY, play)
     this.auxAnim += 1;
 	if(this.auxAnim > this.velAnim)
 	{
-		this.frame = 6;
+		if(this.vidas == 2)this.frame = 6;
+		else this.frame = 2;
 	}
 	var choque = this.game.physics.arcade.collide(this, sueloNormal);
 	var choque2 = this.game.physics.arcade.collide(this, sueloNormal2);
@@ -138,7 +139,8 @@ var Movible = function(game, spriteObj, posX, posY, play)
 	  }
 	  if(this.body.velocity.y > 0)
 	  {
-		 this.frame = 0;
+	   if(this.vidas == 2)this.frame = 0;
+	   else this.frame = 1;
 	  }
 	  if(this.body.velocity.y >= 150)
 	{
@@ -172,7 +174,8 @@ var Movible = function(game, spriteObj, posX, posY, play)
 			this.flipFlop2 = false;
 			if(!this.flipFlop)
 			{
-				this.frame = 4;
+				if(this.vidas == 2)this.frame = 4;
+				else this.frame = 5;
 				this.auxAnim = 0;
 				this.body.velocity.y = 0;
 				this.body.velocity.y -= fuerzaEmpuje;
@@ -203,7 +206,8 @@ var Movible = function(game, spriteObj, posX, posY, play)
 			this.flipFlop2 = false;
 			if(!this.flipFlop)
 			{
-				this.frame = 4;
+				if(this.vidas == 2)this.frame = 4;
+				else this.frame = 5;
 				this.auxAnim = 0;
 				this.body.velocity.y = 0;
 				this.body.velocity.y -= fuerzaEmpuje;

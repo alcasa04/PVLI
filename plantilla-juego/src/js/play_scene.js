@@ -31,6 +31,23 @@ var rayo;
 var animRayo = 3;
 var auxRayo = 0;
 
+var ray = function(game, sprite, posX, posY)
+{
+	Phaser.Sprite.call(this, game, posX, posY, sprite);
+	game.physics.arcade.enable(this);
+	this.anchor.set(.5, .5);
+	this.height = game.height+150;
+	this.width = 500;
+	this.retardo = 0;
+	this.duracion = 50;
+}
+ray.prototype = Object.create(Phaser.Sprite.prototype);
+ray.constructor = rayo;
+ray.prototype.update = function()
+{
+	this.frame = this.retardo/4;
+	this.retardo++;
+}
 //los enemigos al morir lo que hacen es desaparecer y generar un sprite de enemigo en caida
 var muere = function(game, sprite, posX, posY, escala)
 {
@@ -90,7 +107,14 @@ var Movible = function(game, spriteObj, posX, posY)
     this.auxAnim += 1;
 	if(this.auxAnim > this.velAnim)
 	{
+		if(prota.vidas == 2)
+		{
 		this.frame = 6;
+		}
+		else
+		{
+			this.frame = 2;
+		}
 	}
 	var choque = this.game.physics.arcade.collide(this, sueloNormal);
 	var choque2 = this.game.physics.arcade.collide(this, sueloNormal2);
@@ -113,7 +137,14 @@ var Movible = function(game, spriteObj, posX, posY)
 	  }
 	  if(prota.body.velocity.y > 0)
 	  {
+		if(prota.vidas == 2)
+		{
 		 prota.frame = 0;
+		}
+		else
+		{
+			prota.frame = 1;
+		}
 	  }
 	  if(prota.body.velocity.y >= 150)
 	{
@@ -145,7 +176,14 @@ var Movible = function(game, spriteObj, posX, posY)
 		flipFlop2 = false;
 		if(!flipFlop)
 		{
+			if(prota.vidas == 2)
+			{
 			prota.frame = 4;
+			}
+			else
+			{
+				prota.frame = 5;
+			}
 		    this.auxAnim = 0;
 			prota.body.velocity.y = 0;
 			prota.body.velocity.y -= fuerzaEmpuje;
@@ -354,6 +392,7 @@ var PlayScene =
 	rayo.width = 380;
 	rayo.height = rayo.height*(38/30); 
 	rayo.frame = 6;
+	
 
 
 	
@@ -379,6 +418,7 @@ var PlayScene =
 	sueloNormal3.width = 250; sueloNormal3.height = 50;
 	this.game.physics.arcade.enable(sueloNormal3);
 	sueloNormal3.body.immovable = true;
+	this.game.world.addChild(new ray(this.game, 'ray', 400, this.game.height/2));
 	
   },
   
