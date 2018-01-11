@@ -20,7 +20,12 @@ var auxSueloY = 0;
 var auxSueloX = 0;
 var flipFlop3 = false;
 var saltoEnemigo = 0;
-//var teclas;
+
+//randomizado de objetos
+var randomBooster;
+var contador = 0;
+var booster;
+
 
 //el fondo
 var background;
@@ -29,6 +34,110 @@ var background;
 var rayo;
 var animRayo = 3;
 var auxRayo = 0;
+
+var cohete = function(game, posX, posY, tipo)
+{
+	if(tipo == 1)Phaser.Sprite.call(this, game, posX, posY, 'coheteBooster');
+	else Phaser.Sprite.call(this, game, posX, posY, 'cohete');
+	game.physics.arcade.enable(this);
+	this.tipo = tipo;
+	this.anim = 0;
+	this.anchor.set(.5, .5);
+}
+cohete.prototype = Object.create(Phaser.Sprite.prototype);
+cohete.constructor = cohete;
+cohete.prototype.update = function()
+{
+
+	this.anim++;
+	if(this.anim > 5) this.frame = 1;
+	if(this.anim > 10)
+	{
+		this.anim = 0;
+		this.frame = 0;
+	}
+	var choq3 = this.game.physics.arcade.overlap(this, prota);
+    var choq4 = this.game.physics.arcade.overlap(this, prota2);
+	if(this.tipo == 1)
+	{
+		this.body.velocity.y = 50;
+	}
+    else
+	{
+		this.body.velocity.y = -300;
+	}
+	if(choq3)
+	{
+		if(this.tipo == 1)
+		{
+		prota.cohete = true;
+		this.destroy();
+		}
+		else
+		{
+			prota.vidas--;
+			prota.body.velocity.y = -400;
+			this.destroy();
+		}
+	}
+	else if(choq4)
+	{
+		if(this.tipo == 1)
+		{
+		prota2.cohete = true;
+		this.destroy();
+		}
+		else
+		{
+			prota2.vidas--;
+			prota2.body.velocity.y = -400;
+			this.destroy();
+		}
+	}
+}
+var ray = function(game, sprite, posX, posY)
+{
+	Phaser.Sprite.call(this, game, posX, posY, sprite);
+	game.physics.arcade.enable(this);
+	this.height = game.height+150;
+	this.width = 500;
+	this.anchor.set(.5, .5);
+	this.retardo = 0;
+	this.duracion = 50;
+
+
+
+}
+ray.prototype = Object.create(Phaser.Sprite.prototype);
+ray.constructor = rayo;
+ray.prototype.update = function()
+{
+	this.body.setSize(25, this.body.height, 150-this.body.width/4, 0);
+	this.frame = this.retardo/4;
+	this.retardo++;
+	if(this.frame >=15 && this.frame < 29)
+	{
+		var choq = this.game.physics.arcade.overlap(this, prota);
+		var choq2 = this.game.physics.arcade.overlap(this, prota2);
+		if(choq && !prota.esInven)
+		{
+			prota.vidas--;
+			prota.esInven = true;
+			prota.auxInvencible = 0;
+			if(prota.position.x < this.position.x) prota.body.velocity.x = -250;
+			else prota.body.velocity.x = 250;
+		}
+		if(choq2 && !prota2.esInven)
+		{
+			prota2.vidas--;
+			prota2.esInven = true;
+			prota2.auxInvencible = 0;
+			if(prota2.position.x < this.position.x) prota2.body.velocity.x = -250;
+			else prota2.body.velocity.x = 250;
+		}
+	}
+    if(this.frame >= 31) this.destroy();
+}
 
 //los enemigos al morir lo que hacen es desaparecer y generar un sprite de enemigo en caida
 var muere = function(game, sprite, posX, posY, escala)
@@ -84,11 +193,24 @@ var Movible = function(game, spriteObj, posX, posY, play)
 		this.flipFlop = false;
 		var flipFlop2 = false;
 		this.player = play;
+		this.cohete = true;
 	}
 	Movible.prototype = Object.create(Phaser.Sprite.prototype);
 	Movible.constructor = Movible;
 	Movible.prototype.update = function()
 	{
+		if(this.game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR) && this.player == 1 && this.cohete == true)
+		{
+            this.cohete = false;
+			this.game.world.addChild(new cohete(this.game, this.position.x, this.position.y-50, 2));
+		}
+		if(this.game.input.keyboard.isDown(Phaser.Keyboard.L) && this.player == 2 && this.cohete == true)
+		{
+			this.cohete = false;
+			this.game.world.addChild(new cohete(this.game, this.position.x, this.position.y-50, 2));
+		}
+			
+		
     this.auxAnim += 1;
 	if(this.auxAnim > this.velAnim)
 	{
@@ -182,7 +304,7 @@ var Movible = function(game, spriteObj, posX, posY, play)
 				this.flipFlop = true;
 			}
 		}
-		else if(teclas.up.isUp)
+		if(teclas.up.isUp)
 		{
 			this.flipFlop = false;
 
@@ -214,7 +336,7 @@ var Movible = function(game, spriteObj, posX, posY, play)
 				this.flipFlop = true;
 			}
 		}
-		else if(!this.game.input.keyboard.isDown(Phaser.Keyboard.W))
+		if(!this.game.input.keyboard.isDown(Phaser.Keyboard.W))
 		{
 			this.flipFlop = false;
 
@@ -433,6 +555,7 @@ var PlayScene =
 	this.game.physics.startSystem(Phaser.Physics.ARCADE);
     background = this.game.add.tileSprite(0, 0, 1000, 600, 'background');
 	
+
 	rayo = this.game.world.addChild(this.game.add.sprite(this.game.width/2-190, this.game.height-70, 'rayo'));
 	this.game.physics.arcade.enable(rayo);
 	rayo.width = 380;
@@ -440,7 +563,6 @@ var PlayScene =
 	rayo.frame = 6;
 
 
-	
 	this.teclas = this.game.input.keyboard.createCursorKeys();
 	this.game.world.addChild(new Enemigo(this.game, 'enemigo', this.game.width-200, 200));
 	this.game.world.addChild(new Enemigo(this.game, 'enemigo', this.game.width-400, 200));
@@ -465,11 +587,29 @@ var PlayScene =
 	sueloNormal3.width = 250; sueloNormal3.height = 50;
 	this.game.physics.arcade.enable(sueloNormal3);
 	sueloNormal3.body.immovable = true;
+	randomBooster = this.game.rnd.integerInRange(300, 400);
 	
   },
   
   update: function()
   {
+	contador++;
+	if(contador >= randomBooster)
+	{
+		randomBooster = this.game.rnd.integerInRange(300, 600);
+		contador = 0;
+		booster = this.game.rnd.integerInRange(1, 2);
+		if(booster == 1)
+		{
+		var rand = this.game.rnd.integerInRange(50, this.game.width-50);
+		this.game.world.addChild(new ray(this.game, 'ray', rand, this.game.height/2));
+		}
+		else if(booster == 2)
+		{
+			var rand = this.game.rnd.integerInRange(50, this.game.width-50);
+			this.game.world.addChild(new cohete(this.game, rand, 0, 1));
+		}
+	}
 	auxRayo++;
 	if(auxRayo>animRayo)
 	{

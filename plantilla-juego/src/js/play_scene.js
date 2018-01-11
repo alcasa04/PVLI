@@ -8,6 +8,12 @@ var sueloNormal2;
 var sueloNormal3;
 var velCaida = 10;
 
+//randomizado de objetos
+var randomBooster;
+var contador = 0;
+var booster;
+
+
 //entrada de teclado
 var teclas;
 
@@ -21,7 +27,6 @@ var auxSueloY = 0;
 var auxSueloX = 0;
 var flipFlop3 = false;
 var saltoEnemigo = 0;
-//var teclas;
 
 //el fondo
 var background;
@@ -35,18 +40,37 @@ var ray = function(game, sprite, posX, posY)
 {
 	Phaser.Sprite.call(this, game, posX, posY, sprite);
 	game.physics.arcade.enable(this);
-	this.anchor.set(.5, .5);
 	this.height = game.height+150;
 	this.width = 500;
+	this.anchor.set(.5, .5);
 	this.retardo = 0;
 	this.duracion = 50;
+
+
+
 }
 ray.prototype = Object.create(Phaser.Sprite.prototype);
 ray.constructor = rayo;
 ray.prototype.update = function()
 {
+	this.body.setSize(25, this.body.height, 150-this.body.width/4, 0);
 	this.frame = this.retardo/4;
 	this.retardo++;
+	if(this.frame >=15 && this.frame < 29)
+	{
+		var choq = this.game.physics.arcade.overlap(this, prota);
+		//var choq2 = this.game.physics.arcade.overlap(this, prota2);
+		if(choq && !prota.esInven)
+		{
+			prota.vidas--;
+			prota.esInven = true;
+			prota.auxInvencible = 0;
+			if(prota.position.x < this.position.x) prota.body.velocity.x = -250;
+			else prota.body.velocity.x = 250;
+		}
+
+	}
+    if(this.frame >= 31) this.destroy();
 }
 //los enemigos al morir lo que hacen es desaparecer y generar un sprite de enemigo en caida
 var muere = function(game, sprite, posX, posY, escala)
@@ -93,7 +117,7 @@ var Movible = function(game, spriteObj, posX, posY)
 		game.physics.arcade.enable(this);
 		this.anchor.set(.5,0);
 		this.vidas = 2;
-		this.invencible = 75;
+		this.invencible = 100;
 		this.auxInvencible = 0;
 		this.esInven = false;
 		this.frame = 0;
@@ -418,12 +442,25 @@ var PlayScene =
 	sueloNormal3.width = 250; sueloNormal3.height = 50;
 	this.game.physics.arcade.enable(sueloNormal3);
 	sueloNormal3.body.immovable = true;
-	this.game.world.addChild(new ray(this.game, 'ray', 400, this.game.height/2));
+	randomBooster = this.game.rnd.integerInRange(300, 400);
+	
 	
   },
   
   update: function()
   {
+	contador++;
+	if(contador >= randomBooster)
+	{
+		randomBooster = this.game.rnd.integerInRange(300, 600);
+		contador = 0;
+		booster = this.game.rnd.integerInRange(1, 1);
+		if(booster == 1)
+		{
+		var rand = this.game.rnd.integerInRange(50, this.game.width-50);
+		this.game.world.addChild(new ray(this.game, 'ray', rand, this.game.height/2));
+		}
+	}
 	auxRayo++;
 	if(auxRayo>animRayo)
 	{
