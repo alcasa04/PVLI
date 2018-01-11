@@ -28,6 +28,7 @@ var BootScene = {
 	this.game.load.spritesheet('ray','images/Rayo.png', 300, 300);
 	this.game.load.spritesheet('cohete', 'images/Cohete.png', 32, 32);
 	this.game.load.spritesheet('coheteBooster', 'images/CoheteBooster.png', 32, 32);
+	this.game.load.spritesheet('vida', 'images/VidaBooster.png', 50, 50);
   },
 
   create: function () {

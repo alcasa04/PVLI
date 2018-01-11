@@ -35,6 +35,39 @@ var rayo;
 var animRayo = 3;
 var auxRayo = 0;
 
+var vida = function(game, posX, posY)
+{
+	Phaser.Sprite.call(this, game, posX, posY, 'vida');
+	game.physics.arcade.enable(this);
+	this.anim = 0;
+}
+vida.prototype = Object.create(Phaser.Sprite.prototype);
+vida.constructor = vida;
+vida.prototype.update = function()
+{
+	this.anim++;
+	if(this.anim > 5) this.frame = 1;
+	if(this.anim > 10)
+	{
+		this.anim = 0;
+		this.frame = 0;
+	}
+	this.body.velocity.y = 50;
+	var cho = this.game.physics.arcade.overlap(this, prota);
+	var cho2 = this.game.physics.arcade.overlap(this, prota2);
+	if(cho)
+	{
+		if(prota.vidas < 2)
+		prota.vidas++;
+		this.destroy();
+	}
+	if(cho2)
+	{
+		if(prota2.vidas < 2)
+		prota2.vidas++;
+		this.destroy();
+	}
+}
 var cohete = function(game, posX, posY, tipo)
 {
 	if(tipo == 1)Phaser.Sprite.call(this, game, posX, posY, 'coheteBooster');
@@ -157,7 +190,6 @@ var muere = function(game, sprite, posX, posY, escala)
 
 muere.prototype = Object.create(Phaser.Sprite.prototype);
 muere.constructor = muere;
-
 muere.prototype.update = function()
 {
 	this.body.velocity.y += this.vel;
@@ -406,6 +438,7 @@ var Enemigo = function (game, sprite, posX, posY)
 	var dirEnemigo = false;
 	this.anim = 6;
 	this.auxAnim = 0;
+	this.baja = 50;
 
 	
 }
@@ -413,6 +446,13 @@ Enemigo.prototype = Object.create(Phaser.Sprite.prototype);
 Enemigo.constructor = Enemigo;
 Enemigo.prototype.update = function()
 {
+	if(this.baja > 0)
+	{	
+     this.baja--;
+	 this.body.velocity.y = 100;
+	}
+	else
+	{
 	this.auxAnim += 1;
 	if(this.auxAnim > this.anim)
 	{
@@ -466,7 +506,7 @@ Enemigo.prototype.update = function()
 		this.alpha = 0;
 		this.game.world.addChild(new muere(this.game, 'enemigoMuere',this.position.x, this.position.y, this.scale));
 		}
-		else if(!prota.esInven)
+		else if(!prota2.esInven)
 		{
 			prota2.vidas--;
 			prota2.body.velocity.x = -(this.position.x -prota2.position.x)*2;
@@ -537,6 +577,7 @@ Enemigo.prototype.update = function()
 		saltoEnemigo = 0;
 	}		
 }
+}
 var PlayScene = 
 {
 	
@@ -564,9 +605,8 @@ var PlayScene =
 
 
 	this.teclas = this.game.input.keyboard.createCursorKeys();
-	this.game.world.addChild(new Enemigo(this.game, 'enemigo', this.game.width-200, 200));
-	this.game.world.addChild(new Enemigo(this.game, 'enemigo', this.game.width-400, 200));
-	this.game.world.addChild(new Enemigo(this.game, 'enemigo', this.game.width-600, 200));
+
+	this.game.world.addChild(new Enemigo(this.game, 'enemigo', this.game.width/2, -75));
 	prota2 = this.game.world.addChild(new Movible(this.game, 'prota2', this.game.width/2+200, this.game.height-600, 2));
 	prota = this.game.world.addChild(new Movible(this.game,'prota', this.game.width/2-200, this.game.height-600, 1));
 
@@ -596,9 +636,11 @@ var PlayScene =
 	contador++;
 	if(contador >= randomBooster)
 	{
+		randomBooster = this.game.rnd.integerInRange(50, this.game.width-50);
+	    this.game.world.addChild(new Enemigo(this.game, 'enemigo', randomBooster, -75));
 		randomBooster = this.game.rnd.integerInRange(300, 600);
 		contador = 0;
-		booster = this.game.rnd.integerInRange(1, 2);
+		booster = this.game.rnd.integerInRange(1, 3);
 		if(booster == 1)
 		{
 		var rand = this.game.rnd.integerInRange(50, this.game.width-50);
@@ -608,6 +650,11 @@ var PlayScene =
 		{
 			var rand = this.game.rnd.integerInRange(50, this.game.width-50);
 			this.game.world.addChild(new cohete(this.game, rand, 0, 1));
+		}
+		else if(booster == 3)
+		{
+			var rand = this.game.rnd.integerInRange(50, this.game.width-50);
+			this.game.world.addChild(new vida(this.game, rand, 0));
 		}
 	}
 	auxRayo++;
