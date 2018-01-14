@@ -20,6 +20,8 @@ var Menu =
 	
   create: function () 
   {  
+    var music = this.game.add.audio('MenuMusic');
+	music.loopFull();
 
     teclas = this.game.input.keyboard.createCursorKeys();
 	this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
@@ -32,7 +34,6 @@ var Menu =
   
   update: function()
   {  
-	  
 	  auxAnim ++;
 	  if(this.game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR) && seleccion == 1)
 	  {

@@ -29,6 +29,11 @@ var BootScene = {
 	this.game.load.spritesheet('cohete', 'images/Cohete.png', 32, 32);
 	this.game.load.spritesheet('coheteBooster', 'images/CoheteBooster.png', 32, 32);
 	this.game.load.spritesheet('vida', 'images/VidaBooster.png', 50, 50);
+	this.game.load.audio('MenuMusic', 'musica/MenuMusic.mp3');
+	this.game.load.audio('Impulso', 'musica/Impuslo.wav');
+	this.game.load.audio('Explosion', 'musica/Expolsion.wav');
+	this.game.load.audio('Globo', 'musica/Gloob.wav');
+	
   },
 
   create: function () {

@@ -26,6 +26,10 @@ var randomBooster;
 var contador = 0;
 var booster;
 
+//Musica
+var musicImp;
+var musicExpl;
+var musicGlob;
 
 //el fondo
 var background;
@@ -108,6 +112,8 @@ cohete.prototype.update = function()
 		}
 		else
 		{
+			musicExpl.play();
+			musicGlob.play();
 			prota.vidas--;
 			prota.body.velocity.y = -400;
 			this.destroy();
@@ -122,6 +128,8 @@ cohete.prototype.update = function()
 		}
 		else
 		{
+			musicExpl.play();
+			musicGlob.play();
 			prota2.vidas--;
 			prota2.body.velocity.y = -400;
 			this.destroy();
@@ -154,6 +162,7 @@ ray.prototype.update = function()
 		var choq2 = this.game.physics.arcade.overlap(this, prota2);
 		if(choq && !prota.esInven)
 		{
+			musicGlob.play();
 			prota.vidas--;
 			prota.esInven = true;
 			prota.auxInvencible = 0;
@@ -162,6 +171,7 @@ ray.prototype.update = function()
 		}
 		if(choq2 && !prota2.esInven)
 		{
+			musicGlob.play();
 			prota2.vidas--;
 			prota2.esInven = true;
 			prota2.auxInvencible = 0;
@@ -184,6 +194,7 @@ var muere = function(game, sprite, posX, posY, escala)
 	this.scale = escala;
 	this.anim = 5;
 	this.velAnim = 0;
+	this.puede= true;
 
 	
 }
@@ -200,6 +211,11 @@ muere.prototype.update = function()
 	var choque7 = this.game.physics.arcade.collide(this, sueloNormal3);
 	if(choque5 || choque6 || choque7)
 	{
+		if(this.puede)
+		{
+		musicExpl.play();
+		this.puede = false;
+		}
 		this.frame = 1;
 		this.velAnim+=1;
 		if(this.velAnim > this.anim)
@@ -261,6 +277,7 @@ var Movible = function(game, spriteObj, posX, posY, play)
 		{
 			if(!this.esInven && this.position.y-20 > prota2.position.y)
 			{
+				musicGlob.play();
 				prota2.body.velocity.y = -250;
 				this.vidas--;
 				this.esInven = true;
@@ -268,6 +285,7 @@ var Movible = function(game, spriteObj, posX, posY, play)
 			}
 			else if(!prota2.esInven && prota2.position.y-20 > this.position.y)
 			{
+				musicGlob.play();
 				this.body.velocity.y = -250;
 				prota2.vidas--;
 				prota2.auxInvencible = 0;
@@ -324,7 +342,7 @@ var Movible = function(game, spriteObj, posX, posY, play)
 	{
 		if(teclas.up.isDown)
 		{
-
+			musicImp.play();
 			this.flipFlop2 = false;
 			if(!this.flipFlop)
 			{
@@ -356,7 +374,7 @@ var Movible = function(game, spriteObj, posX, posY, play)
 	{
 		if(this.game.input.keyboard.isDown(Phaser.Keyboard.W))
 		{
-
+			musicImp.play();
 			this.flipFlop2 = false;
 			if(!this.flipFlop)
 			{
@@ -587,6 +605,9 @@ var PlayScene =
     this.game.world.centerX, this.game.world.centerY, 'logo');
     logo.anchor.setTo(0.5, 0.5);
 	logo.destroy();
+	musicImp = this.game.add.audio('Impulso');
+	musicExpl = this.game.add.audio('Explosion');
+	musicGlob = this.game.add.audio('Globo');
 	},
 	
   create: function () 

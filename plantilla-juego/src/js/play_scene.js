@@ -7,11 +7,19 @@ var sueloNormal;
 var sueloNormal2;
 var sueloNormal3;
 var velCaida = 10;
+var nivel = 1;
+var numEnem;
+var pasado = false;
 
 //randomizado de objetos
 var randomBooster;
 var contador = 0;
 var booster;
+
+//Musica
+var musicImp;
+var musicExpl;
+var musicGlob;
 
 
 //entrada de teclado
@@ -33,6 +41,7 @@ var background;
 
 //variables empleadas en los rayos
 var rayo;
+var rayo2;
 var animRayo = 3;
 var auxRayo = 0;
 
@@ -45,9 +54,6 @@ var ray = function(game, sprite, posX, posY)
 	this.anchor.set(.5, .5);
 	this.retardo = 0;
 	this.duracion = 50;
-
-
-
 }
 ray.prototype = Object.create(Phaser.Sprite.prototype);
 ray.constructor = rayo;
@@ -62,6 +68,7 @@ ray.prototype.update = function()
 		//var choq2 = this.game.physics.arcade.overlap(this, prota2);
 		if(choq && !prota.esInven)
 		{
+			musicGlob.play();
 			prota.vidas--;
 			prota.esInven = true;
 			prota.auxInvencible = 0;
@@ -84,6 +91,7 @@ var muere = function(game, sprite, posX, posY, escala)
 	this.scale = escala;
 	this.anim = 5;
 	this.velAnim = 0;
+	this.puede = true;
 
 	
 }
@@ -99,8 +107,17 @@ muere.prototype.update = function()
 	var choque5 = this.game.physics.arcade.collide(this, sueloNormal);
 	var choque6 = this.game.physics.arcade.collide(this, sueloNormal2);
 	var choque7 = this.game.physics.arcade.collide(this, sueloNormal3);
-	if(choque5 || choque6 || choque7)
+	var choque8 = this.game.physics.arcade.collide(this, rayo);
+	var choque9 = this.game.physics.arcade.collide(this, rayo2);
+	if(choque5 || choque6 || choque7 || choque8|| choque9)
 	{
+
+		if(this.puede)
+		{
+		numEnem--;
+		musicExpl.play();
+		this.puede = false;
+		}
 		this.frame = 1;
 		this.velAnim+=1;
 		if(this.velAnim > this.anim)
@@ -196,7 +213,7 @@ var Movible = function(game, spriteObj, posX, posY)
 	}
 	if(teclas.up.isDown)
 	{
-
+		musicImp.play();
 		flipFlop2 = false;
 		if(!flipFlop)
 		{
@@ -229,16 +246,16 @@ var Movible = function(game, spriteObj, posX, posY)
 			prota.body.velocity.x += velocidadProta;
 			prota.scale.setTo(1, 1);
 	}
-		if(this.game.physics.arcade.overlap(this, rayo))
+		if(this.game.physics.arcade.overlap(this, rayo) || this.game.physics.arcade.overlap(this, rayo2))
 	{
 		this.destroy();
 	}
-		this.muerte();
-		if(this.esInven)
-		this.invencibilidad();
-		this.muerte();
-		if(this.esInven)
-		this.invencibilidad();
+	this.muerte();
+	if(this.esInven)
+	this.invencibilidad();
+	this.muerte();
+	if(this.esInven)
+	this.invencibilidad();
 	}
 	Movible.prototype.muerte = function()
 	{
@@ -316,6 +333,7 @@ Enemigo.prototype.update = function()
 	{
 		if(this.position.y-85 > prota.position.y)
 		{
+		musicGlob.play();
 		prota.body.velocity.y = -250;
 		this.cabeza = false;
 		this.destruido = true;
@@ -324,6 +342,7 @@ Enemigo.prototype.update = function()
 		}
 		else if(!prota.esInven)
 		{
+			musicGlob.play();
 			prota.vidas--;
 			prota.body.velocity.x = -(this.position.x -prota.position.x)*2;
 		    this.body.velocity.x = (this.position.x -prota.position.x)*2;
@@ -402,6 +421,9 @@ var PlayScene =
     this.game.world.centerX, this.game.world.centerY, 'logo');
     logo.anchor.setTo(0.5, 0.5);
 	logo.destroy();
+	musicImp = this.game.add.audio('Impulso');
+	musicExpl = this.game.add.audio('Explosion');
+	musicGlob = this.game.add.audio('Globo');
 	},
 	
   create: function () 
@@ -411,44 +433,60 @@ var PlayScene =
 	this.game.physics.startSystem(Phaser.Physics.ARCADE);
     background = this.game.add.tileSprite(0, 0, 1000, 600, 'background');
 	
-	rayo = this.game.world.addChild(this.game.add.sprite(this.game.width/2-190, this.game.height-70, 'rayo'));
-	this.game.physics.arcade.enable(rayo);
-	rayo.width = 380;
-	rayo.height = rayo.height*(38/30); 
-	rayo.frame = 6;
-	
 
-
-	
-	this.teclas = this.game.input.keyboard.createCursorKeys();
-	this.game.world.addChild(new Enemigo(this.game, 'enemigo', this.game.width-200, 200));
-	this.game.world.addChild(new Enemigo(this.game, 'enemigo', this.game.width-400, 200));
-	this.game.world.addChild(new Enemigo(this.game, 'enemigo', this.game.width-600, 200));
-	prota = this.game.world.addChild(new Movible(this.game,'prota', this.game.width/2-50, this.game.height-600));
-	
-
-	
-	sueloNormal = this.game.add.sprite(-15, this.game.height-100, 'suelo2');
-	sueloNormal.width = 250; sueloNormal.height = 100;
-	this.game.physics.arcade.enable(sueloNormal);
-	sueloNormal.body.immovable = true;
-	
-	sueloNormal2 = this.game.add.sprite(this.game.width-235, this.game.height-100, 'suelo2');
-	sueloNormal2.width = 250; sueloNormal2.height = 100;
-	this.game.physics.arcade.enable(sueloNormal2);
-	sueloNormal2.body.immovable = true;
-	
-	sueloNormal3 = this.game.add.sprite(this.game.width/2-125, this.game.height/2-20, 'suelo');
-	sueloNormal3.width = 250; sueloNormal3.height = 50;
-	this.game.physics.arcade.enable(sueloNormal3);
-	sueloNormal3.body.immovable = true;
+	//Boosters
 	randomBooster = this.game.rnd.integerInRange(300, 400);
+
+	this.teclas = this.game.input.keyboard.createCursorKeys();
+	
+	//Niveles
+	if(nivel == 1)
+	{
+		numEnem = 3;
+		//Enemigos
+		this.game.world.addChild(new Enemigo(this.game, 'enemigo', this.game.width-200, 200));
+		this.game.world.addChild(new Enemigo(this.game, 'enemigo', this.game.width-400, 200));
+		this.game.world.addChild(new Enemigo(this.game, 'enemigo', this.game.width-600, 200));
+		prota = this.game.world.addChild(new Movible(this.game,'prota', this.game.width/2-50, this.game.height-600));
+		//Rayos
+		rayo = this.game.world.addChild(this.game.add.sprite(this.game.width/2-190, this.game.height-70, 'rayo'));
+		this.game.physics.arcade.enable(rayo);
+		rayo.body.immovable = true;
+		rayo.width = 380;
+		rayo.height = 70; 
+		rayo.frame = 6;
+		rayo2 = this.game.world.addChild(this.game.add.sprite(this.game.width+1000, this.game.height-70, 'rayo'));
+		this.game.physics.arcade.enable(rayo2);
+		rayo2.body.immovable = true;
+	    //Suelos
+		sueloNormal = this.game.add.sprite(-15, this.game.height-100, 'suelo2');
+		sueloNormal.width = 250; sueloNormal.height = 100;
+		this.game.physics.arcade.enable(sueloNormal);
+		sueloNormal.body.immovable = true;
+		sueloNormal2 = this.game.add.sprite(this.game.width-235, this.game.height-100, 'suelo2');
+		sueloNormal2.width = 250; sueloNormal2.height = 100;
+		this.game.physics.arcade.enable(sueloNormal2);
+		sueloNormal2.body.immovable = true;
+		sueloNormal3 = this.game.add.sprite(this.game.width/2-125, this.game.height/2-20, 'suelo');
+		sueloNormal3.width = 250; sueloNormal3.height = 50;
+		this.game.physics.arcade.enable(sueloNormal3);
+		sueloNormal3.body.immovable = true;
+
+	}
+
 	
 	
   },
   
   update: function()
   {
+	//Paso de nivel
+	if(numEnem <= 0)
+	{
+		nivel++;
+		pasado = false;
+	}
+	
 	contador++;
 	if(contador >= randomBooster)
 	{
@@ -466,9 +504,11 @@ var PlayScene =
 	{
 		auxRayo = 0;
 		rayo.frame --;
+		rayo2.frame--;
 		if(rayo.frame== 0)
 		{
 			rayo.frame = 6;
+			rayo2.frame = 6;
 		}
 
 	}
@@ -479,6 +519,43 @@ var PlayScene =
 	 background.position.x = this.game.width/2;
 	 background.position.y = this.game.height/2;
 	 background.rotation += 0.0005;
+	 //Niveles
+	if(nivel == 2 && !pasado)
+	{
+		pasado = true;
+		numEnem = 3;
+		prota.position.x = this.game.width/2;
+		prota.position.y = 100;
+		prota.body.velocity.x = 0;
+		prota.body.velocity.y = 0;
+		//Enemigos
+		this.game.world.addChild(new Enemigo(this.game, 'enemigo', 10, 50));
+		this.game.world.addChild(new Enemigo(this.game, 'enemigo', this.game.width-10, 50));
+		this.game.world.addChild(new Enemigo(this.game, 'enemigo', this.game.width/2, this.game.height-100));
+		//Rayos
+		rayo.position.x = -70;
+		rayo.position.y = this.game.height-110;
+		rayo2.width = 380;
+		rayo2.height = 70;
+		rayo2.position.x = this.game.width-rayo2.width+70;
+		rayo2.position.y = this.game.height-110;
+		//Suelos
+		sueloNormal.position.x = -15;
+		sueloNormal.position.y =  this.game.height-400;
+		sueloNormal.width = 250; sueloNormal.height = 80;
+		this.game.physics.arcade.enable(sueloNormal);
+		sueloNormal.body.immovable = true;
+		sueloNormal2.position.x = this.game.width-235;
+		sueloNormal2.position.y = this.game.height-400;
+		sueloNormal2.width = 250; sueloNormal2.height = 80;
+		this.game.physics.arcade.enable(sueloNormal2);
+		sueloNormal2.body.immovable = true;
+		sueloNormal3.position.x = this.game.width/2-125; 
+		sueloNormal3.position.y = this.game.height-100;
+		sueloNormal3.width = 250; sueloNormal3.height = 50;
+		this.game.physics.arcade.enable(sueloNormal3);
+		sueloNormal3.body.immovable = true;
+	}
   },
 };
 
