@@ -404,6 +404,7 @@ var Movible = function(game, spriteObj, posX, posY, play)
 	}
 		if(this.game.physics.arcade.overlap(this, rayo))
 	{
+		musicGlob.play();
 		this.destroy();
 	}
 		this.muerte();
@@ -499,6 +500,7 @@ Enemigo.prototype.update = function()
 	{
 		if(this.position.y-85 > prota.position.y)
 		{
+		musicGlob.play();
 		prota.body.velocity.y = -250;
 		this.cabeza = false;
 		this.destruido = true;
@@ -507,6 +509,7 @@ Enemigo.prototype.update = function()
 		}
 		else if(!prota.esInven)
 		{
+			musicGlob.play();
 			prota.vidas--;
 			prota.body.velocity.x = -(this.position.x -prota.position.x)*2;
 		    this.body.velocity.x = (this.position.x -prota.position.x)*2;
@@ -518,6 +521,7 @@ Enemigo.prototype.update = function()
 	{
 		if(this.position.y-85 > prota2.position.y)
 		{
+		musicGlob.play();
 		prota2.body.velocity.y = -250;
 		this.cabeza = false;
 		this.destruido = true;
@@ -526,6 +530,7 @@ Enemigo.prototype.update = function()
 		}
 		else if(!prota2.esInven)
 		{
+			musicGlob.play();
 			prota2.vidas--;
 			prota2.body.velocity.x = -(this.position.x -prota2.position.x)*2;
 		    this.body.velocity.x = (this.position.x -prota2.position.x)*2;
