@@ -27,6 +27,7 @@ var contador = 0;
 var booster;
 
 //Musica
+var musicFondo;
 var musicImp;
 var musicExpl;
 var musicGlob;
@@ -617,6 +618,8 @@ var PlayScene =
 	
   create: function () 
   {  
+    musicFondo = this.game.add.audio('FondoVersus');
+	musicFondo.loopFull();
     background = this.game.add.tileSprite(0, 0, 1000, 600, 'background');
     teclas = this.game.input.keyboard.createCursorKeys();
 	this.game.physics.startSystem(Phaser.Physics.ARCADE);

@@ -33,6 +33,8 @@ var BootScene = {
 	this.game.load.audio('Impulso', 'musica/Impuslo.wav');
 	this.game.load.audio('Explosion', 'musica/Expolsion.wav');
 	this.game.load.audio('Globo', 'musica/Gloob.wav');
+	this.game.load.audio('FondoArcade', 'musica/Arcade.mp3');
+	this.game.load.audio('FondoVersus', 'musica/Versus.mp3');
 	
   },
 

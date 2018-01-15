@@ -9,6 +9,7 @@ var seleccion = 1;
 var flipFlop1 = false;
 var flipFlop2 = false;
 var flecha;
+var music;
 
 var Menu = 
 {
@@ -20,7 +21,7 @@ var Menu =
 	
   create: function () 
   {  
-    var music = this.game.add.audio('MenuMusic');
+    music = this.game.add.audio('MenuMusic');
 	music.loopFull();
 
     teclas = this.game.input.keyboard.createCursorKeys();
@@ -37,10 +38,12 @@ var Menu =
 	  auxAnim ++;
 	  if(this.game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR) && seleccion == 1)
 	  {
+		  music.stop();
 		  this.game.state.start('play');
 	  }
 	  else if(this.game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR))
 	  {
+		  music.stop();
 		  this.game.state.start('Versus');
 	  }
 	  if((teclas.up.isDown || teclas.down.isDown) && !flipFlop1 && !flipFlop2)
