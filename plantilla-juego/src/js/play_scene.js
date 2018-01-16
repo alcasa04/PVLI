@@ -553,7 +553,7 @@ var PlayScene =
 	  {
 		  nivel = 3;
 		  gameOver.alpha = 1;
-		  finText = this.game.add.text(this.game.width/2, this.game.width/2+150, '¡Has Ganado!');
+		  finText = this.game.add.text(this.game.width/2, this.game.height/2+150, '¡Has Ganado!');
 		  finText.font = 'Arial Black';
 		  finText.fontSize = 30;
 		  finText.strokeThickness = 7;
