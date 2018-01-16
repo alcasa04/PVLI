@@ -35,6 +35,7 @@ var BootScene = {
 	this.game.load.audio('Globo', 'musica/Gloob.wav');
 	this.game.load.audio('FondoArcade', 'musica/Arcade.mp3');
 	this.game.load.audio('FondoVersus', 'musica/Versus.mp3');
+	this.game.load.image('GameOver', 'images/GameOver.png');
 	
   },
 

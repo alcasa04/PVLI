@@ -11,6 +11,9 @@ var velCaida = 10;
 
 //entrada de teclado
 var teclas;
+var gameOver;
+var fin = false;
+var ganador;
 
 var fuerzaEmpuje = 250;
 var velocidadProta = 10;
@@ -407,6 +410,7 @@ var Movible = function(game, spriteObj, posX, posY, play)
 	{
 		musicGlob.play();
 		this.destroy();
+		this.vidas = 0;
 	}
 		this.muerte();
 		if(this.esInven)
@@ -618,6 +622,7 @@ var PlayScene =
 	
   create: function () 
   {  
+    fin = false;
     musicFondo = this.game.add.audio('FondoVersus');
 	musicFondo.loopFull();
     background = this.game.add.tileSprite(0, 0, 1000, 600, 'background');
@@ -657,11 +662,51 @@ var PlayScene =
 	this.game.physics.arcade.enable(sueloNormal3);
 	sueloNormal3.body.immovable = true;
 	randomBooster = this.game.rnd.integerInRange(300, 400);
+	gameOver = this.game.world.addChild(this.game.add.sprite(this.game.width/2, this.game.height/2, 'GameOver'));
+	gameOver.anchor.set(.5, .5);
+	gameOver.alpha = 0;
 	
   },
   
   update: function()
   {
+	  if((prota.vidas <= 0 || prota2.vidas <= 0) && !fin)
+	  {
+			fin = true;
+			ganador = this.game.add.text(this.game.width/2, this.game.height/2+150, 'Ganador: Player');
+			ganador.font = 'Arial Black';
+			ganador.fontSize = 24;
+			ganador.strokeThickness = 7;
+			ganador.stroke = '#ffffff';
+			ganador.anchor.set(.5);
+		  if(prota.vidas > prota2.vidas)
+		  {
+			  ganador.text = 'Ganador: Player 1';
+		  }
+		  else if(prota.vidas == prota2.vidas)
+		  {
+			  ganador.text = 'Empate';
+		  }
+		  else
+		  {
+			  ganador.text = 'Ganador: Player 2';
+		  }
+		  gameOver.alpha = 1;
+	  }
+	  if(fin)
+	  {
+
+		if(this.game.input.keyboard.isDown(Phaser.Keyboard.R))
+		{
+		  this.game.state.start('Versus');
+		  musicFondo.stop();
+		}
+		else if(this.game.input.keyboard.isDown(Phaser.Keyboard.M))
+		{
+			this.game.state.start('menu');
+			musicFondo.stop();
+		}
+	  }
 	contador++;
 	if(contador >= randomBooster)
 	{

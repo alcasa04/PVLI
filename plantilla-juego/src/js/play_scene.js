@@ -33,6 +33,9 @@ var textNivel;
 
 //entrada de teclado
 var teclas;
+var gameOver;
+var finText;
+var fin;
 
 var fuerzaEmpuje = 250;
 var velocidadProta = 10;
@@ -245,7 +248,6 @@ var Movible = function(game, spriteObj, posX, posY)
 	else if(teclas.up.isUp)
 	{
 		flipFlop = false;
-
 	}
 	if(teclas.left.isDown && prota.body.velocity.x > -200)
 	{
@@ -457,10 +459,15 @@ var PlayScene =
 	musicImp = this.game.add.audio('Impulso');
 	musicExpl = this.game.add.audio('Explosion');
 	musicGlob = this.game.add.audio('Globo');
+
 	},
 	
   create: function () 
   {  
+    fin = false;
+    vidasTotales = 2;
+	nivel = 1;
+	score = 0;
     musicFondo = this.game.add.audio('FondoArcade');
 	musicFondo.loopFull();
     background = this.game.add.tileSprite(0, 0, 1000, 600, 'background');
@@ -493,6 +500,7 @@ var PlayScene =
 	textNivel.fontSize = 30;
 	textNivel.strokeThickness = 7;
 	textNivel.stroke = '#ffffff';
+
 	
 	
 	//Niveles
@@ -531,6 +539,9 @@ var PlayScene =
 		sueloNormal3.body.immovable = true;
 
 	}
+	gameOver = this.game.world.addChild(this.game.add.sprite(this.game.width/2, this.game.height/2, 'GameOver'));
+	gameOver.anchor.set(.5, .5);
+	gameOver.alpha = 0;
 
 	
 	
@@ -538,15 +549,57 @@ var PlayScene =
   
   update: function()
   {
+	  if (nivel > 3 && !fin)
+	  {
+		  nivel = 3;
+		  gameOver.alpha = 1;
+		  finText = this.game.add.text(this.game.width/2, this.game.width/2+150, '¡Has Ganado!');
+		  finText.font = 'Arial Black';
+		  finText.fontSize = 30;
+		  finText.strokeThickness = 7;
+		  finText.stroke = '#ffffff';
+		  finText.anchor.set(.5);
+		  fin = true;
+	  }
+	  if(fin)
+	  {
+		  		  if(this.game.input.keyboard.isDown(Phaser.Keyboard.R))
+	  {
+		  this.game.state.start('play');
+		  musicFondo.stop();
+	  }
+	  else if(this.game.input.keyboard.isDown(Phaser.Keyboard.M))
+	  {
+		  this.game.state.start('menu');
+		  musicFondo.stop();
+	  }
+	  }
 	  if(vidasTotales > 0)
 	  textVidas.text = 'Vidas: '+(vidasTotales-1);
+	else
+	{
+	  gameOver.alpha = 1;
+	  if(this.game.input.keyboard.isDown(Phaser.Keyboard.R))
+	  {
+		  this.game.state.start('play');
+		  musicFondo.stop();
+	  }
+	  else if(this.game.input.keyboard.isDown(Phaser.Keyboard.M))
+	  {
+		  this.game.state.start('menu');
+		  musicFondo.stop();
+	  }
+	}
       textScore.text = 'Score: '+score;
 	  textNivel.text = 'Nivel: '+nivel;
 	//Paso de nivel
 	if(numEnem <= 0)
 	{
+		if(nivel <4)
+		{
 		nivel++;
 		pasado = false;
+		}
 	}
 	
 	contador++;
