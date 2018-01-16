@@ -14,6 +14,8 @@ var teclas;
 var gameOver;
 var fin = false;
 var ganador;
+var score1 = 0, score2 = 0;
+var score1Text, score2Text;
 
 var fuerzaEmpuje = 250;
 var velocidadProta = 10;
@@ -116,6 +118,7 @@ cohete.prototype.update = function()
 		}
 		else
 		{
+			score1-=2;
 			musicExpl.play();
 			musicGlob.play();
 			prota.vidas--;
@@ -132,6 +135,7 @@ cohete.prototype.update = function()
 		}
 		else
 		{
+			score2-=2;
 			musicExpl.play();
 			musicGlob.play();
 			prota2.vidas--;
@@ -166,6 +170,7 @@ ray.prototype.update = function()
 		var choq2 = this.game.physics.arcade.overlap(this, prota2);
 		if(choq && !prota.esInven)
 		{
+			score1-=2;
 			musicGlob.play();
 			prota.vidas--;
 			prota.esInven = true;
@@ -175,6 +180,7 @@ ray.prototype.update = function()
 		}
 		if(choq2 && !prota2.esInven)
 		{
+			score2-=2;
 			musicGlob.play();
 			prota2.vidas--;
 			prota2.esInven = true;
@@ -281,6 +287,8 @@ var Movible = function(game, spriteObj, posX, posY, play)
 		{
 			if(!this.esInven && this.position.y-20 > prota2.position.y)
 			{
+				score1-=5;
+				score2+=6;
 				musicGlob.play();
 				prota2.body.velocity.y = -250;
 				this.vidas--;
@@ -289,6 +297,8 @@ var Movible = function(game, spriteObj, posX, posY, play)
 			}
 			else if(!prota2.esInven && prota2.position.y-20 > this.position.y)
 			{
+				score2-=5;
+				score1+=6;
 				musicGlob.play();
 				this.body.velocity.y = -250;
 				prota2.vidas--;
@@ -408,6 +418,8 @@ var Movible = function(game, spriteObj, posX, posY, play)
 	}
 		if(this.game.physics.arcade.overlap(this, rayo))
 	{
+		if(this.player == 1) score1-=2;
+	    else score2-=2;
 		musicGlob.play();
 		this.destroy();
 		this.vidas = 0;
@@ -505,6 +517,7 @@ Enemigo.prototype.update = function()
 	{
 		if(this.position.y-85 > prota.position.y)
 		{
+	    score1+=10;
 		musicGlob.play();
 		prota.body.velocity.y = -250;
 		this.cabeza = false;
@@ -514,6 +527,7 @@ Enemigo.prototype.update = function()
 		}
 		else if(!prota.esInven)
 		{
+			score2-=2;
 			musicGlob.play();
 			prota.vidas--;
 			prota.body.velocity.x = -(this.position.x -prota.position.x)*2;
@@ -526,6 +540,7 @@ Enemigo.prototype.update = function()
 	{
 		if(this.position.y-85 > prota2.position.y)
 		{
+		score2+=10;
 		musicGlob.play();
 		prota2.body.velocity.y = -250;
 		this.cabeza = false;
@@ -535,6 +550,7 @@ Enemigo.prototype.update = function()
 		}
 		else if(!prota2.esInven)
 		{
+			score2-=2;
 			musicGlob.play();
 			prota2.vidas--;
 			prota2.body.velocity.x = -(this.position.x -prota2.position.x)*2;
@@ -608,7 +624,6 @@ Enemigo.prototype.update = function()
 }
 var PlayScene = 
 {
-	
 	preload: function()
 	{
 	var logo = this.game.add.sprite(
@@ -622,6 +637,7 @@ var PlayScene =
 	
   create: function () 
   {  
+  score1 = score2 = 0;
     fin = false;
     musicFondo = this.game.add.audio('FondoVersus');
 	musicFondo.loopFull();
@@ -630,13 +646,11 @@ var PlayScene =
 	this.game.physics.startSystem(Phaser.Physics.ARCADE);
     background = this.game.add.tileSprite(0, 0, 1000, 600, 'background');
 	
-
 	rayo = this.game.world.addChild(this.game.add.sprite(this.game.width/2-190, this.game.height-70, 'rayo'));
 	this.game.physics.arcade.enable(rayo);
 	rayo.width = 380;
 	rayo.height = rayo.height*(38/30); 
 	rayo.frame = 6;
-
 
 	this.teclas = this.game.input.keyboard.createCursorKeys();
 
@@ -644,9 +658,6 @@ var PlayScene =
 	prota2 = this.game.world.addChild(new Movible(this.game, 'prota2', this.game.width/2+200, this.game.height-600, 2));
 	prota = this.game.world.addChild(new Movible(this.game,'prota', this.game.width/2-200, this.game.height-600, 1));
 
-	
-
-	
 	sueloNormal = this.game.add.sprite(-15, this.game.height-100, 'suelo2');
 	sueloNormal.width = 250; sueloNormal.height = 100;
 	this.game.physics.arcade.enable(sueloNormal);
@@ -665,11 +676,23 @@ var PlayScene =
 	gameOver = this.game.world.addChild(this.game.add.sprite(this.game.width/2, this.game.height/2, 'GameOver'));
 	gameOver.anchor.set(.5, .5);
 	gameOver.alpha = 0;
+	score1Text = this.game.add.text(0, 0, 'Score1: ');
+	score1Text.font = 'Arial Black';
+    score1Text.fontSize = 30;
+	score1Text.strokeThickness = 7;
+	score1Text.stroke = '#ffffff';
+	score2Text = this.game.add.text(this.game.width-250, 0, 'Score2: ');
+	score2Text.font = 'Arial Black';
+    score2Text.fontSize = 30;
+	score2Text.strokeThickness = 7;
+	score2Text.stroke = '#ffffff';
 	
   },
   
   update: function()
   {
+	  score1Text.text = 'Score1:  '+score1;
+	  score2Text.text = 'Score2:  '+score2;
 	  if((prota.vidas <= 0 || prota2.vidas <= 0) && !fin)
 	  {
 			fin = true;
